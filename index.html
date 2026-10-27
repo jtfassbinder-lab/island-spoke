@@ -94,6 +94,7 @@ th.num { font-family: var(--f-body) }
 .log { font-size: .85rem; display: grid; gap: 4px; max-height: 220px; overflow: auto }
 .log div { border-left: 3px solid var(--line); padding-left: 8px }
 @media (prefers-reduced-motion: no-preference) { .fresh .die { animation: pop .25s ease-out } @keyframes pop { from { transform: scale(.6) } to { transform: scale(1) } } }
+#toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(16px + env(safe-area-inset-bottom, 0px)); max-width: min(560px, calc(100% - 32px)); background: var(--bad); color: #fff; padding: 10px 14px; border-radius: 8px; font-weight: 600; z-index: 20; box-shadow: 0 4px 16px rgba(0,0,0,.25) }
 </style>
 </head>
 <body>
@@ -158,7 +159,7 @@ th.num { font-family: var(--f-body) }
             <thead><tr><th>Jet</th><th class="num">Down</th><th class="num">Fix</th><th class="num">Cannibalize</th></tr></thead>
             <tbody id="repairBody"></tbody>
           </table></div>
-          <p class="hint">Only jets that were Down at the start of the day can be repaired. Repaired jets are Ready tomorrow. Cannibalize strips 1 Down jet for good to fix another of the same type for 0 points.</p>
+          <p class="hint">Only jets that were Down at the start of the day can be repaired. Repaired jets are Ready tomorrow. Cannibalize needs 2 Down jets of the same type: one is stripped for parts and is gone for good (Out), the other is fixed for 0 points. On Day 1 no type has 2 Down, so it unlocks once jets start getting damaged.</p>
         </div>
       </section>
     </aside>
@@ -268,7 +269,9 @@ const flying = t => D().assign.flat().filter(x => x === t).length;
 const repairedCount = d => TYPES.reduce((a, t) => a + d.fix[t] + d.can[t], 0);
 const readyOf = f => TYPES.reduce((a, t) => a + f[t].r, 0);
 function log(m) { S.log.unshift(`${stamp()} Day ${view + 1}: ${m}`); S.log = S.log.slice(0, 150); }
-function deny(m) { flash = m; render(); }
+function deny(m) { flash = m; render(); toast(m); }
+function toast(m) { let t = document.getElementById('toast'); if (!t) { t = document.createElement('div'); t.id = 'toast'; t.setAttribute('role', 'alert'); document.body.appendChild(t); }
+  t.textContent = m; t.hidden = false; clearTimeout(toast.h); toast.h = setTimeout(() => { t.hidden = true; }, 4000); }
 
 // ---------- planning actions ----------
 function addJet(i) {
@@ -406,7 +409,7 @@ function renderFleet() {
   $('readyMeta').textContent = d.executed ? `${readyOf(f)} of 14 Ready tomorrow` : `${readyOf(f)} of 14 Ready today`;
   $('repairBody').innerHTML = TYPES.map(t => `<tr><td>${AC[t].name}</td><td class="num">${pl ? f[t].d : '-'}</td>
     <td class="num"><span class="rcount">${pl ? `<button class="mini" data-fx="${t}:-1" aria-label="One fewer ${AC[t].name} repair">-</button>` : ''}${d.fix[t]}${pl ? `<button class="mini" data-fx="${t}:1" aria-label="Repair one more ${AC[t].name}">+</button>` : ''}</span><br><span class="hint">${fixPrice(t)} pts each</span></td>
-    <td class="num"><span class="rcount">${pl ? `<button class="mini" data-cn="${t}:-1" aria-label="Undo cannibalize ${AC[t].name}">-</button>` : ''}${d.can[t]}${pl ? `<button class="mini" data-cn="${t}:1" aria-label="Cannibalize ${AC[t].name}">+</button>` : ''}</span></td></tr>`).join('');
+    <td class="num"><span class="rcount">${pl ? `<button class="mini" data-cn="${t}:-1" aria-label="Undo cannibalize ${AC[t].name}" ${d.can[t] ? '' : 'disabled'}>-</button>` : ''}${d.can[t]}${pl ? `<button class="mini" data-cn="${t}:1" aria-label="Cannibalize ${AC[t].name}" ${f[t].d - d.fix[t] - 2 * d.can[t] >= 2 ? '' : 'disabled'}>+</button>` : ''}</span>${pl && f[t].d - d.fix[t] - 2 * d.can[t] < 2 && !d.can[t] ? '<br><span class="hint">needs 2 Down</span>' : ''}</td></tr>`).join('');
   document.querySelectorAll('[data-fx]').forEach(b => b.onclick = () => { const [t, v] = b.dataset.fx.split(':'); planFix(t, +v, 'fix'); });
   document.querySelectorAll('[data-cn]').forEach(b => b.onclick = () => { const [t, v] = b.dataset.cn.split(':'); planFix(t, +v, 'can'); });
 }
