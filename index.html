@@ -1,3 +1,8 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Island Spoke Proctor Calculator</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700&family=JetBrains+Mono:wght@500;700&display=swap">
@@ -90,6 +95,8 @@ th.num { font-family: var(--f-body) }
 .log div { border-left: 3px solid var(--line); padding-left: 8px }
 @media (prefers-reduced-motion: no-preference) { .fresh .die { animation: pop .25s ease-out } @keyframes pop { from { transform: scale(.6) } to { transform: scale(1) } } }
 </style>
+</head>
+<body>
 <style>
 .readout { border: 2px solid var(--navy); border-radius: 8px; overflow: hidden }
 .readout h3 { margin: 0; padding: 8px 12px; background: var(--navy); color: var(--navy-ink); font-family: var(--f-display); letter-spacing: .05em; text-transform: uppercase; font-size: 1.05rem }
@@ -509,3 +516,6 @@ $('tReset').onclick = () => { T.left = T.total; T.running = false; drawTimer(); 
 function render() { renderTabs(); renderDay(); renderFleet(); renderPoints(); renderBoard(); renderLog(); }
 wireReset(); render();
 </script>
+
+</body>
+</html>
