@@ -40,17 +40,17 @@ g.push(sec('2. WHAT HAPPENS AND WHEN'));
 g.push(P('Four days, 20 minutes each: plan 13 minutes, brief the Colonel 5, dice 2. The wing gets 14 Wing Points a day to fly and fix jets. A change of command happens between Day 2 and Day 3.'));
 g.push(headerTable([1300, 2600, 3200, W - 7100], ['Time', 'What is happening', 'Proctor', 'Support POC'], [
   ['0850', 'Setup', 'Open the calculator. Reset game.', 'Room set, papers stacked in order (Section 3).'],
-  ['0920', 'Day 1 starts: Show of Force', 'Read the scenario. Name GLP Lead #1. Give Maintenance the start status.', 'Hand out Day 1 papers.'],
+  ['0920', 'Day 1 starts: Show of Force', 'Read the scenario. GLP Lead #1 (pre-assigned) takes command. Give Maintenance the start status.', 'Hand out GMC Guides, Aircraft Cards, Day 1 Orders, Day 1 Worksheet.'],
   ['0930', 'C-17 arrives', 'Read the C-17 inject.', ''],
   ['0933', 'Day 1 brief', 'Colonel: push back (Section 4).', ''],
   ['0938', 'Day 1 dice', 'Execute, read the readout, Close Day.', ''],
-  ['0940', 'Day 2 starts: FONOP Escort', '', 'Hand out Day 2 papers.'],
+  ['0940', 'Day 2 starts: FONOP Escort', '', 'Hand out Day 2 Orders and Day 2 Worksheet.'],
   ['0953 / 0958', 'Day 2 brief, then dice', 'Push back. Execute, read, Close Day.', ''],
-  ['1000', 'Turnaround: Wing CC killed', 'Read the inject. Name GLP Lead #2. Give the Bunker Card.', 'Lockdown (Section 3).'],
-  ['1005', 'Day 3 starts: Strike Ashore', 'Answer Maintenance by aircraft type.', 'Hand out Day 3 papers.'],
+  ['1000', 'Turnaround: Wing CC killed', 'Read the inject. GLP Lead #2 (pre-assigned) takes command. Give the Bunker Card.', 'Lockdown (Section 3).'],
+  ['1005', 'Day 3 starts: Strike Ashore', 'Answer Maintenance by aircraft type.', 'Hand out Day 3 Orders and Day 3 Worksheet.'],
   ['1015', 'Casualties arrive', 'Read the casualty inject.', ''],
   ['1018 / 1023', 'Day 3 brief, then dice', 'Push back. Execute, read, Close Day.', ''],
-  ['1025', 'Day 4 starts: Defend Andersen', 'Apply opening strike. Tell Maintenance which jets.', 'Hand out Day 4 papers.'],
+  ['1025', 'Day 4 starts: Defend Andersen', 'Apply opening strike. Tell Maintenance which jets.', 'Hand out Day 4 Orders and Day 4 Worksheet.'],
   ['1038 / 1043', 'Day 4 brief, then dice', 'Push back. Execute, read the readout and end state.', ''],
   ['1045', 'Debrief', 'Run the flight debrief. Evaluator takes Lead #2.', ''],
   ['1050', 'ENDEX', 'Copy summary to the Activity Lead.', 'Collect papers. Reset the room.'],
@@ -72,10 +72,10 @@ g.push(headerTable([1300, W - 1300], ['Time', 'Support POC hands out'], [
   ['1005', 'Day 3 Orders, Day 3 Worksheet (the Proctor gives Lead #2 the Bunker Card)'],
   ['1025', 'Day 4 Orders, Day 4 Worksheet'],
 ], { firstFill: C.label, firstBold: true, firstCenter: true }));
-g.push(note('Hand out orders. Do not read them aloud. Read only what is below.'));
+g.push(note('Each day starts with that day\u2019s Orders and Worksheet: Day 2 Orders at 0940, Day 3 Orders at 1005, Day 4 Orders at 1025. Never hand out a day early. Hand out orders, do not read them aloud. Read only what is below.'));
 g.push(sub('0920 Scenario'));
 g.push(say('"You are the leadership of a fighter wing at Andersen Air Force Base, Guam. Recent activity on the Chinese mainland shows China is mobilizing. Your job is to keep Andersen at the highest readiness possible and to be seen doing it, as a visual deterrent. You have 14 fighters and 14 Wing Points each day. Points pay for flying jets and fixing them. You will not have enough to do everything. Each day you get orders with taskers. Brief the Colonel on what you will do and why. If this turns into a fight, you fight with what you kept ready."'));
-g.push(P([['Then: ', { bold: true }], 'name Lead #1 (BCL only). Tell Maintenance: "11 of 14 Ready. One F-35A, one F-15EX, and one F-16 are Down." ', ['No questions after this.', { bold: true }]]));
+g.push(P([['Then: ', { bold: true }], 'GLP Lead #1 is pre-assigned; confirm they are in the room. Tell Maintenance: "11 of 14 Ready. One F-35A, one F-15EX, and one F-16 are Down." ', ['No questions after this.', { bold: true }]]));
 g.push(sub('0930 C-17 inject'));
 g.push(say('"A lost plane from the 62nd Airlift Wing needs refueling and is redirected to your base. It carries 3 food pallets, 5 beds, 20 gallons of water and 10 individual tents. Along with the resources, it has 2 pilots, 1 loadmaster and 5 crew. You must account for this into your resources and take care of the crew indefinitely."'));
 g.push(P([['Success: ', { bold: true, color: C.green }], 'they refuel it (1 point) and say how the 8 crew are housed and fed. ', ['Failure: ', { bold: true, color: C.red }], 'the crew is never addressed.']));
@@ -83,7 +83,7 @@ g.push(sub('1000 Turnaround'));
 g.push(say('"Your Wing Commander has been assassinated by an insider threat. As a result, your base goes into FPCON Delta. You are forced to go into a bunker."'));
 g.push(N('Evaluator takes Lead #1 outside for their debrief.', { ref: 'nums2' }));
 g.push(N([['Support POC: ', { bold: true }], 'all GMC out of the room. Anyone inside after 30 seconds is eliminated. Remove every note and the Day 1 and 2 Orders and Worksheets.'], { ref: 'nums2' }));
-g.push(N('Name Lead #2 (BCL only). Hand them only the Bunker Card: "14 jets assigned. Status unknown. 14 Wing Points per day."', { ref: 'nums2' }));
+g.push(N('GLP Lead #2 (pre-assigned) takes command. Hand them only the Bunker Card: "14 jets assigned. Status unknown. 14 Wing Points per day."', { ref: 'nums2' }));
 g.push(N('GMC back in at 1003. Lead #1 rejoins Ops after the debrief.', { ref: 'nums2' }));
 g.push(sub('1015 Casualty inject'));
 g.push(say('"Six U.S. military personnel are requesting urgent medical assistance after their ship was struck by adversarial troops; all members request a place to stay and immediate physical examination. Two are conscious but report concussion symptoms. One was impaled by a metal pole through their stomach. Two have shallow breathing after being shot in the back. One suffered a wound to the arm with massive arterial bleeding. They request an emergency helicopter to pick them up."'));

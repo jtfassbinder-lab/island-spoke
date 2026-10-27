@@ -142,7 +142,7 @@ poc.push(H('POC Lead Instructions', { before: 300 }));
 poc.push(P('Read the scenario below aloud to all GMC cadets. Establish the following conditions before beginning:'));
 poc.push(P([['Scenario:', { bold: true }]], { before: 120, after: 60 }));
 poc.push(P('"You are the leadership of a fighter wing at Andersen Air Force Base, Guam. Recent activity on the Chinese mainland shows China is mobilizing. Your job is to keep Andersen at the highest readiness possible and to be seen doing it, as a visual deterrent. If the conflict crosses into open combat, you fight with what you kept ready. You have 14 fighters and 14 Wing Points each phase. Points pay for flying jets and fixing them. You will not have enough to do everything. Each phase you will get a list of taskers. Your Wing Commander decides which matter most. Then brief the Colonel on what you did and why."'));
-poc.push(P('Then hand over the GMC Guides and Aircraft Reference Cards. Assign GLP Lead #1 (BCL only). Cadets split into Ops and Maintenance.'));
+poc.push(P('Then hand over the GMC Guides and Aircraft Reference Cards. GLP Lead #1 is pre-assigned and takes command. Cadets split into Ops and Maintenance.'));
 poc.push(P([['Worked example (optional, 1 minute, counts against Day 1 planning):', { bold: true }]], { before: 120, after: 60 }));
 poc.push(B('Maintenance reports: 11 of 14 jets are Ready. 1 F-35A, 1 F-15EX, and 1 F-16 are Down.'));
 poc.push(B('Before the roll: the Wing CC ranks a sample tasker #1 and puts an F-35A and an F-16 on it (3 points, 78%). Maintenance commits 3 points to repair the Down F-35A.'));
@@ -187,7 +187,7 @@ poc.push(N('POC Evaluator takes GLP Lead #1 outside for their debrief.', { ref: 
 poc.push(N([['Lockdown: ', { bold: true }], 'all GMC leave the classroom. Any GMC still in the area after 30 seconds is eliminated from the GLP.'], { ref: 'nums2' }));
 poc.push(N('Attached POC remove every cadet note and the Day 1 and Day 2 Orders and Worksheets. The Proctor keeps the official record in the calculator.', { ref: 'nums2' }));
 poc.push(N('The Day 1 and Day 2 Orders are taken away with everything else. Lead #2 starts Day 3 with only the Bunker Card and the Day 3 Orders.', { ref: 'nums2' }));
-poc.push(N('The Proctor names GLP Lead #2 (BCL only). GMC return to the room.', { ref: 'nums2' }));
+poc.push(N('GLP Lead #2 (pre-assigned) takes command. GMC return to the room.', { ref: 'nums2' }));
 poc.push(N([['Lead #2 receives only the Bunker Card: ', {}], ['"14 jets assigned. Status unknown. 14 Wing Points per phase."', { italics: true }]], { ref: 'nums2' }));
 poc.push(N('During Day 3 planning, Maintenance rebuilds the Day 3 Worksheet board by asking the Proctor about one aircraft type at a time. Answer each truthfully.', { ref: 'nums2' }));
 poc.push(N('Lead #1 rejoins Ops after their debrief.', { ref: 'nums2' }));
