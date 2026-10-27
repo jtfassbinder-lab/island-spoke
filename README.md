@@ -15,6 +15,7 @@ A fighter wing at Andersen AFB, Guam balances flying jets today against having j
 | `guides/Island_Spoke_Evaluator_Card.docx` | Evaluator Card |
 | `guides/Operation_Island_Spoke_GMC_Guide.docx` | GMC Guide |
 | `guides/Operation_Island_Spoke_GMC_Day_Orders.docx` | Day 1-4 Orders, handed out one day at a time |
+| `guides/Island_Spoke_GMC_Daily_Worksheets.docx` | Day 1-4 Worksheets: Availability Board and plan, one page per day |
 | `guides/Operation_Island_Spoke_Aircraft_Reference_Cards.docx` | Aircraft Reference Cards |
 | `guides/Operation_Island_Spoke_POC_Guide.docx` | Full POC Guide (Activity Lead reference) |
 | `source/` | Node scripts that build the Word files |

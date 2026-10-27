@@ -90,7 +90,7 @@ poc.push(B('POC Evaluators: at least one per GLP lead (Form 2)'));
 poc.push(B('2 attached POC: setup, lockdown, removing materials at the turnaround'));
 poc.push(H('Equipment (per group)', { size: 24 }));
 poc.push(B('14 GMC Guides and 1 set of Aircraft Reference Cards per cell'));
-poc.push(B('1 Availability Board (11x17), 4 Phase Sheets, 1 set of Day 1-4 Orders (handed out one day at a time)'));
+poc.push(B('1 set of Day 1-4 Orders and Day 1-4 Worksheets (handed out one day at a time)'));
 poc.push(B('1 laptop or phone with the Proctor Calculator open, 2 dice as backup, 1 Bunker Card, Form 2s, pencils'));
 poc.push(P([['Proctor Calculator: ', { bold: true }], 'https://jtfassbinder-lab.github.io/island-spoke/ (opens on any phone, no sign-in)'], { before: 80 }));
 { const { Paragraph: Pa, ImageRun } = require('docx');
@@ -185,11 +185,11 @@ poc.push(H('Read aloud', { before: 300 }));
 poc.push(P([['"Your Wing Commander has been assassinated by an insider threat. As a result, your base goes into FPCON Delta. You are forced to go into a bunker."', { italics: true }]]));
 poc.push(N('POC Evaluator takes GLP Lead #1 outside for their debrief.', { ref: 'nums2' }));
 poc.push(N([['Lockdown: ', { bold: true }], 'all GMC leave the classroom. Any GMC still in the area after 30 seconds is eliminated from the GLP.'], { ref: 'nums2' }));
-poc.push(N('Attached POC remove every cadet note and Phase Sheet, and cover the Availability Board. The Proctor keeps the official record in the calculator.', { ref: 'nums2' }));
+poc.push(N('Attached POC remove every cadet note and the Day 1 and Day 2 Orders and Worksheets. The Proctor keeps the official record in the calculator.', { ref: 'nums2' }));
 poc.push(N('The Day 1 and Day 2 Orders are taken away with everything else. Lead #2 starts Day 3 with only the Bunker Card and the Day 3 Orders.', { ref: 'nums2' }));
 poc.push(N('The Proctor names GLP Lead #2 (BCL only). GMC return to the room.', { ref: 'nums2' }));
 poc.push(N([['Lead #2 receives only the Bunker Card: ', {}], ['"14 jets assigned. Status unknown. 14 Wing Points per phase."', { italics: true }]], { ref: 'nums2' }));
-poc.push(N('During Day 3 planning, Maintenance rebuilds the Day 3 block of the board by asking the Proctor about one aircraft type at a time. Answer each truthfully.', { ref: 'nums2' }));
+poc.push(N('During Day 3 planning, Maintenance rebuilds the Day 3 Worksheet board by asking the Proctor about one aircraft type at a time. Answer each truthfully.', { ref: 'nums2' }));
 poc.push(N('Lead #1 rejoins Ops after their debrief.', { ref: 'nums2' }));
 poc.push(H('What this tests'));
 poc.push(B('Whether Lead #2 takes charge without hesitation.'));
@@ -212,7 +212,7 @@ poc.push(sp(160));
 poc.push(timehacks(['1045 - Evaluator takes GLP Lead #2 aside for debrief', '1045 - Flight debrief begins (Lead #1 was debriefed at the turnaround)', '1050 - ENDEX']));
 poc.push(sp(80));
 poc.push(B('Debrief follows the framework: Event Recap, Learning Focal Points, Contributing Factors, Root Causes, Instructional Fixes.'));
-poc.push(B('Read the Availability Board day by day. Which day cost the wing the jets it needed in Phase 4?'));
+poc.push(B('Read the Daily Worksheets in order. Which day cost the wing the jets it needed in Phase 4?'));
 poc.push(B('POC should act only to redirect. Minimally intervene.'));
 
 // ---------- APPENDIX ----------
@@ -281,27 +281,7 @@ poc.push(P([['Inject at least 2 questions per group during each brief.', { itali
 // ---------- FORMS ----------
 poc.push(pageBreak());
 poc.push(P([['FORMS', { bold: true, size: 28, color: C.navy }]], { align: CEN, after: 200 }));
-poc.push(H('Availability Board (one board, kept by Maintenance)'));
-poc.push(P([['Maintenance fills one block at the start of each day and briefs it before Ops plans. Ready + Down + Out = the quantity. Repaired = jets fixed with points that day, Ready the next day. Never erase a past day.', { size: 18, color: C.grey }]]));
-const BW = [1960, 1100, 1400, 1400, 1400, 2100];
-['Day 1 (start)', 'Day 2', 'Day 3', 'Day 4'].forEach((day, di) => {
-  const pre = di === 0;
-  const rows = [
-    ['F-22', '2', pre ? '2' : '', pre ? '0' : '', pre ? '0' : '', ''],
-    ['F-35A', '3', pre ? '2' : '', pre ? '1' : '', pre ? '0' : '', ''],
-    ['F-15EX', '4', pre ? '3' : '', pre ? '1' : '', pre ? '0' : '', ''],
-    ['F-16', '5', pre ? '4' : '', pre ? '1' : '', pre ? '0' : '', ''],
-    ['Total', '14', pre ? '11' : '', pre ? '3' : '', pre ? '0' : '', ''],
-  ];
-  poc.push(P([[day, { bold: true, color: C.navy }], di === 0 ? '' : '   Taskers succeeded yesterday: ____ of ____'], { before: 160, after: 60 }));
-  poc.push(headerTable(BW, ['Aircraft', 'Qty', 'Ready', 'Down', 'Out', 'Repaired today'], rows, { firstFill: C.label, firstBold: true, center: true }));
-});
-poc.push(H('Phase Sheet (one per phase, filled by the Wing CC)'));
-poc.push(P('Points split:  Ops ____  /  Maintenance ____   (total 14)        Shift posture: ________'));
-poc.push(headerTable([3100, 900, 2000, 1260, 2100], ['Tasker', 'Rank', 'Jets assigned', 'Weapons briefed', 'Why'],
-  [1, 2, 3, 4, 5, 6].map(i => [`${i}.`, '', '', '', '']), { firstFill: C.label }));
-poc.push(P('Repairs planned before the roll (aircraft and points): ____________________________', { before: 120 }));
-poc.push(P('Result (Proctor):  Taskers succeeded ____ of ____'));
+poc.push(P('The wing keeps one Daily Worksheet per day (separate document: Island_Spoke_GMC_Daily_Worksheets). The top half is that day\'s Availability Board, which Maintenance fills and briefs first. The bottom half is the plan, points split, and results.'));
 
 // ---------- SUCCESS / FAILURE GUIDE (bottom) ----------
 poc.push(pageBreak());
@@ -379,7 +359,7 @@ PHASES.forEach((ph, i) => {
   ph.taskers.forEach(t => ord.push(B(t[0])));
   ord.push(P([['4. Resources', { bold: true, color: C.navy, size: 24 }]], { before: 160, after: 60 }));
   ord.push(B([['Wing Points today: ', { bold: true }], '14', ' (flying and repairs together)']));
-  ord.push(B('Jets: as reported by Maintenance on the Availability Board.'));
+  ord.push(B('Jets: as reported by Maintenance on today\'s Worksheet.'));
   ord.push(B('Repairs are planned with the rest of the plan, before the dice. A repaired jet is Ready tomorrow.'));
   ord.push(P([['5. Timeline', { bold: true, color: C.navy, size: 24 }]], { before: 160, after: 60 }));
   OTIME[i].forEach(t => ord.push(B(t)));

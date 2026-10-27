@@ -60,17 +60,17 @@ g.push(table([1900, W - 1900], [new TableRow({ children: [
 g.push(sec('Timeline'));
 g.push(headerTable([1300, 4300, W - 5600], ['Time', 'Proctor', 'Support POC'], [
   ['0850', '', 'Set up the room (Setup checklist).'],
-  ['0920', 'Read the scenario. Name GLP Lead #1. Clock starts.', 'Hand out GMC Guides, Aircraft Cards, Day 1 Orders.'],
+  ['0920', 'Read the scenario. Name GLP Lead #1. Clock starts.', 'Hand out GMC Guides, Aircraft Cards, Day 1 Orders and Worksheet.'],
   ['0930', 'Read the C-17 inject.', ''],
   ['0933', 'Day 1 brief (5 min). You are the Colonel.', ''],
   ['0938', 'Execute Day 1. Read the readout. Close the day.', ''],
-  ['0940', 'Day 2 begins.', 'Hand out Day 2 Orders.'],
+  ['0940', 'Day 2 begins.', 'Hand out Day 2 Orders and Worksheet.'],
   ['0953 / 0958', 'Day 2 brief, then Execute and readout.', ''],
   ['1000', 'Read the assassination inject. Name Lead #2.', 'Run the lockdown (Turnaround section).'],
-  ['1005', 'Give Lead #2 the Bunker Card.', 'Hand out Day 3 Orders.'],
+  ['1005', 'Give Lead #2 the Bunker Card.', 'Hand out Day 3 Orders and Worksheet.'],
   ['1015', 'Read the casualty inject.', ''],
   ['1018 / 1023', 'Day 3 brief, then Execute and readout.', ''],
-  ['1025', 'Press Apply opening strike. Tell Maintenance which 2 jets went Down.', 'Hand out Day 4 Orders.'],
+  ['1025', 'Press Apply opening strike. Tell Maintenance which 2 jets went Down.', 'Hand out Day 4 Orders and Worksheet.'],
   ['1038 / 1043', 'Day 4 brief, then Execute. Read the readout and end state.', ''],
   ['1045', 'Flight debrief (Debrief section).', ''],
   ['1050', 'ENDEX. Press Copy summary (or Export) and send it to the Activity Lead.', 'Collect papers. Reset the room.'],
@@ -107,9 +107,9 @@ g.push(note('Anything not covered: the cadet states the action, the result, and 
 
 // ---- setup
 g.push(sec('Setup (Support POC, 0850-0920)'));
-g.push(N('Check the room: tables for 14 and a wall for the board.', { ref: 'nums' }));
-g.push(N('Tape up the Availability Board (11x17). The Day 1 block is pre-filled.', { ref: 'nums' }));
-g.push(N('At seats: 14 GMC Guides, Aircraft Reference Cards, Phase Sheets, pencils.', { ref: 'nums' }));
+g.push(N('Check the room: tables for 14.', { ref: 'nums' }));
+g.push(N('Stack the Day 1-4 Orders and the Day 1-4 Worksheets in order. Each day\'s Worksheet goes out with that day\'s Orders.', { ref: 'nums' }));
+g.push(N('At seats: 14 GMC Guides, Aircraft Reference Cards, pencils.', { ref: 'nums' }));
 g.push(N('Hold for the Proctor: Day 1-4 Orders in order, the Bunker Card, 2 dice as backup.', { ref: 'nums' }));
 g.push(N('Give Evaluators their Form 2s and the Evaluator Card.', { ref: 'nums' }));
 g.push(N('Open the calculator on the Proctor\'s device, select the group, and press Reset game.', { ref: 'nums' }));
@@ -146,12 +146,12 @@ g.push(sec('Turnaround (1000-1005)'));
 g.push(P([['Proctor reads: ', { bold: true }], ['"Your Wing Commander has been assassinated by an insider threat. As a result, your base goes into FPCON Delta. You are forced to go into a bunker."', { italics: true }]]));
 g.push(headerTable([1300, 4000, W - 5300], ['Time', 'Proctor', 'Support POC (lockdown)'], [
   ['1000', 'Read the inject. Evaluator takes Lead #1 outside.', 'Move every GMC out. Anyone inside after 30 seconds is eliminated from the GLP.'],
-  ['1001', 'Name GLP Lead #2 (BCL only).', 'Remove every note, Phase Sheet, and the Day 1 and Day 2 Orders. Cover the Availability Board.'],
+  ['1001', 'Name GLP Lead #2 (BCL only).', 'Remove every note and the Day 1 and Day 2 Orders and Worksheets.'],
   ['1003', 'Give Lead #2 only the Bunker Card.', 'Tell the Proctor the room is clear. Bring GMC back in.'],
-  ['1005', 'Day 3 begins.', 'Hand out Day 3 Orders.'],
+  ['1005', 'Day 3 begins.', 'Hand out Day 3 Orders and Worksheet.'],
 ], { firstFill: C.label, firstBold: true, firstCenter: true }));
 g.push(shadedBox([P([['BUNKER CARD: ', { bold: true }], '"14 jets assigned. Status unknown. 14 Wing Points per day."'], { after: 60 }),
-  P('Maintenance rebuilds the board by asking you about one aircraft type at a time. Answer each truthfully from the calculator\'s Fleet panel. Lead #1 rejoins Ops after their debrief.', { after: 0 })], C.cream));
+  P('Maintenance rebuilds the Day 3 Worksheet board by asking you about one aircraft type at a time. Answer each truthfully from the calculator\'s Fleet panel. Lead #1 rejoins Ops after their debrief.', { after: 0 })], C.cream));
 g.push(sec('End state (after the Day 4 roll)'));
 g.push(B([['4 or more of the 6 Day 4 taskers succeeded: ', { bold: true }], ['"Andersen holds."', { italics: true }]]));
 g.push(B([['3 or fewer: ', { bold: true }], ['"Andersen is overwhelmed."', { italics: true }]]));
@@ -176,7 +176,7 @@ g.push(headerTable([2400, 3400, W - 5800], ['PROBLEM', 'WHAT IT LOOKS LIKE', 'HO
 ], { hdr: C.red, firstFill: C.pink, firstBold: true, italicCol: 2 }));
 g.push(sec('Debrief (1045-1050)'));
 g.push(P('The Evaluator takes Lead #2 aside. You run the flight debrief in a horseshoe, most junior first. Redirect only when needed.'));
-g.push(B([['Event recap: ', { bold: true }], 'read the board day by day. What happened?']));
+g.push(B([['Event recap: ', { bold: true }], 'read each day\'s Worksheet in order. What happened?']));
 g.push(B([['Focal point: ', { bold: true }], 'which day cost the wing the jets it needed on Day 4?']));
 g.push(B([['Root cause: ', { bold: true }], 'push past "bad dice" to the decision behind it.']));
 g.push(B([['Fix: ', { bold: true }], 'each lead names one thing they would change.']));
