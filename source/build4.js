@@ -60,7 +60,7 @@ g.push(table([1900, W - 1900], [new TableRow({ children: [
 g.push(sec('Timeline'));
 g.push(headerTable([1300, 4300, W - 5600], ['Time', 'Proctor', 'Support POC'], [
   ['0850', '', 'Set up the room (Setup checklist).'],
-  ['0920', 'Read the scenario. Name GLP Lead #1. Clock starts.', 'Hand out GMC Guides, Aircraft Cards, Day 1 Orders and Worksheet.'],
+  ['0920', 'Read the scenario. Name GLP Lead #1. Tell Maintenance the start: 11 of 14 Ready; 1 F-35A, 1 F-15EX, 1 F-16 Down. Clock starts.', 'Hand out GMC Guides, Aircraft Cards, Day 1 Orders and Worksheet.'],
   ['0930', 'Read the C-17 inject.', ''],
   ['0933', 'Day 1 brief (5 min). You are the Colonel.', ''],
   ['0938', 'Execute Day 1. Read the readout. Close the day.', ''],
