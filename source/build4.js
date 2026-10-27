@@ -53,7 +53,7 @@ g.push(sp(120));
 g.push(P([['The Proctor ', { bold: true }], 'runs the game and plays the Colonel: hands out orders, reads the injects, takes each brief, runs the calculator, and reads the outcome. ', ['The 2 Support POC ', { bold: true }], 'work for the Proctor: setup, hand-outs, the lockdown, and cleanup. Evaluators have their own card.']));
 g.push(table([1900, W - 1900], [new TableRow({ children: [
   cell([new Pa({ alignment: CEN, children: [new ImageRun({ type: 'png', data: fs.readFileSync(__dirname + '/calc_qr.png'), transformation: { width: 110, height: 110 } })] })], { w: 1900 }),
-  cell([[['PROCTOR CALCULATOR', { bold: true, color: C.navy, size: 22 }]], 'Scan with a phone or open on a laptop. Press Reset game before 0920.',
+  cell([[['PROCTOR CALCULATOR', { bold: true, color: C.navy, size: 22 }]], 'Scan with a phone or open on a laptop. No sign-in needed. Press Reset game before 0920. If the calculator blocks something, a red message appears at the bottom of the screen.',
     '1. Add the jets Ops assigned to each tasker, and the repairs Maintenance planned.', '2. Press Execute. Every jet gets a success roll and a damage roll.', '3. Read the readout aloud, then press Close Day.',
     [['jtfassbinder-lab.github.io/island-spoke', { color: C.grey, size: 18 }]]], { w: W - 1900 }),
 ] })]));
@@ -73,7 +73,7 @@ g.push(headerTable([1300, 4300, W - 5600], ['Time', 'Proctor', 'Support POC'], [
   ['1025', 'Press Apply opening strike. Tell Maintenance which 2 jets went Down.', 'Hand out Day 4 Orders.'],
   ['1038 / 1043', 'Day 4 brief, then Execute. Read the readout and end state.', ''],
   ['1045', 'Flight debrief (Debrief section).', ''],
-  ['1050', 'ENDEX. Export the spreadsheet.', 'Collect papers. Reset the room.'],
+  ['1050', 'ENDEX. Press Copy summary (or Export) and send it to the Activity Lead.', 'Collect papers. Reset the room.'],
 ], { firstFill: C.label, firstBold: true, firstCenter: true }));
 
 // ---- how the game works
@@ -99,7 +99,7 @@ g.push(headerTable([2340, 2340, 2340, 2340], ['Jets', 'Odds', 'Jets', 'Odds'], [
 g.push(sec('Maintenance options (all cost Wing Points)'));
 g.push(headerTable([2600, 1800, W - 4400], ['Option', 'Points', 'Effect'], [
   ['Repair', 'Points to fix', 'Ready tomorrow'],
-  ['Cannibalize', '0', 'Strip 1 Down jet for good to fix another of the same type'],
+  ['Cannibalize', '0', 'Needs 2 Down jets of the same type. One is stripped for parts and is Out for good, the other is fixed. Not possible on Day 1.'],
   ['Extended shifts (12s)', 'Costs 3', 'Every repair costs 1 less today'],
   ['Rest', 'Gives +3', 'Every jet flown costs 1 more today'],
 ], { firstFill: C.label, firstBold: true }));
