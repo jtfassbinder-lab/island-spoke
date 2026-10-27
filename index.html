@@ -1,0 +1,511 @@
+<title>Island Spoke Proctor Calculator</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: ops board. Day tabs on top, taskers left, fleet + munitions + points right, day-by-day board across the bottom. */
+:root {
+  --bg: #eef1f5; --panel: #ffffff; --ink: #172338; --muted: #5a6577; --line: #cdd5e0;
+  --navy: #1f3864; --navy-ink: #ffffff; --gold: #c9a400; --gold-soft: #fff2cc;
+  --ok: #2e7d32; --ok-soft: #e2efda; --bad: #c00000; --bad-soft: #f8d7d7; --chip: #deeaf1;
+  --f-display: "Barlow Condensed", "Arial Narrow", Arial, sans-serif;
+  --f-body: "Barlow", Arial, Helvetica, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0f1520; --panel: #182132; --ink: #e6ebf3; --muted: #9aa6b8; --line: #2c3a52;
+  --navy: #2f5597; --navy-ink: #ffffff; --gold: #e0b923; --gold-soft: #3a3210;
+  --ok: #6cc070; --ok-soft: #1c3320; --bad: #ff6b6b; --bad-soft: #3d1a1a; --chip: #22314a; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0f1520; --panel: #182132; --ink: #e6ebf3; --muted: #9aa6b8; --line: #2c3a52;
+  --navy: #2f5597; --navy-ink: #ffffff; --gold: #e0b923; --gold-soft: #3a3210;
+  --ok: #6cc070; --ok-soft: #1c3320; --bad: #ff6b6b; --bad-soft: #3d1a1a; --chip: #22314a; color-scheme: dark }
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.45;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 16px 40px }
+.wrap { max-width: 1200px; margin: 0 auto; display: grid; gap: 16px }
+header { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px }
+h1 { font-family: var(--f-display); font-size: 1.9rem; letter-spacing: .02em; margin: 0; text-transform: uppercase; text-wrap: balance }
+.sub { color: var(--muted); font-size: .9rem; margin: 2px 0 0 }
+.tabs { display: flex; flex-wrap: wrap; gap: 6px }
+.tab { font-family: var(--f-display); font-size: 1rem; letter-spacing: .04em; text-transform: uppercase; padding: 8px 14px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); border-radius: 6px; cursor: pointer }
+.tab[aria-selected="true"] { background: var(--navy); color: var(--navy-ink); border-color: var(--navy) }
+.tab:disabled { opacity: .4; cursor: not-allowed }
+.tab small { font-family: var(--f-body); font-size: .7rem; text-transform: none; letter-spacing: 0; opacity: .85; margin-left: 4px }
+.grid { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 16px; align-items: start }
+@media (max-width: 900px) { .grid { grid-template-columns: minmax(0, 1fr) } }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; min-width: 0 }
+.bar { background: var(--navy); color: var(--navy-ink); padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap }
+.bar h2 { font-family: var(--f-display); font-size: 1.15rem; letter-spacing: .05em; text-transform: uppercase; margin: 0 }
+.bar .meta { font-size: .85rem; opacity: .9 }
+.pad { padding: 12px 14px; display: grid; gap: 10px; min-width: 0 }
+.situation { font-style: italic; color: var(--muted); margin: 0; max-width: 75ch }
+.step { display: flex; gap: 10px; align-items: center; justify-content: space-between; flex-wrap: wrap; border-radius: 6px; padding: 8px 10px; border: 1px solid var(--gold); background: var(--gold-soft) }
+.step.red { border-color: var(--bad); background: var(--bad-soft) }
+.tasker { border: 1px solid var(--line); border-radius: 8px; overflow: hidden }
+.t-head { display: flex; gap: 10px; align-items: center; justify-content: space-between; flex-wrap: wrap; padding: 10px 12px; background: var(--chip) }
+.t-name { font-weight: 700 }
+.t-loads { font-size: .8rem; color: var(--muted); letter-spacing: .03em; text-transform: uppercase }
+.odds { font-family: var(--f-mono); font-size: .95rem; font-variant-numeric: tabular-nums; font-weight: 700; text-align: right }
+.odds small { display: block; font-family: var(--f-body); font-weight: 500; font-size: .72rem; color: var(--muted) }
+.t-body { padding: 10px 12px; display: grid; gap: 8px }
+.jets { display: grid; gap: 6px }
+.jet { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; border: 1px solid var(--line); border-radius: 6px; padding: 6px 8px; font-size: .88rem }
+.jet .nm { font-weight: 600; min-width: 9em }
+.die { font-family: var(--f-mono); font-weight: 700; font-size: .8rem; padding: 2px 7px; border-radius: 4px; background: var(--chip); white-space: nowrap }
+.die.hit { background: var(--ok-soft); color: var(--ok) } .die.miss { background: var(--bad-soft); color: var(--bad) }
+.jet .x { margin-left: auto; border: 0; background: transparent; color: var(--muted); cursor: pointer; font-size: 1.1rem; padding: 0 6px }
+.add { display: flex; flex-wrap: wrap; gap: 6px; align-items: center }
+select { font: inherit; padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px; background: var(--panel); color: var(--ink) }
+.btn { font: 600 .9rem var(--f-body); padding: 7px 12px; border-radius: 6px; border: 1px solid var(--navy); background: var(--panel); color: var(--ink); cursor: pointer }
+.btn.primary { background: var(--navy); color: var(--navy-ink) }
+.btn.gold { background: var(--gold); border-color: var(--gold); color: #1a1400 }
+.btn:disabled, .mini:disabled { opacity: .4; cursor: not-allowed }
+.btn:focus-visible, .tab:focus-visible, select:focus-visible, .mini:focus-visible, .jet .x:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px }
+.mini { font: 600 .75rem var(--f-body); padding: 3px 7px; border-radius: 5px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); cursor: pointer }
+.verdict { border-radius: 6px; padding: 8px 10px; display: grid; gap: 2px }
+.verdict.ok { background: var(--ok-soft); border: 1px solid var(--ok) } .verdict.bad { background: var(--bad-soft); border: 1px solid var(--bad) }
+.verdict b { font-family: var(--f-display); font-size: 1.1rem; letter-spacing: .06em }
+.verdict.ok b { color: var(--ok) } .verdict.bad b { color: var(--bad) }
+.verdict span { font-style: italic }
+.warn { color: var(--bad); font-size: .85rem; font-weight: 600; min-height: 0 }
+table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums }
+th, td { text-align: left; padding: 6px 6px; border-bottom: 1px solid var(--line); font-size: .88rem; vertical-align: middle }
+th { font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted) }
+td.num, th.num { text-align: center; font-family: var(--f-mono) }
+th.num { font-family: var(--f-body) }
+.scroll { overflow-x: auto }
+.prow { display: flex; justify-content: space-between; gap: 8px; align-items: center; flex-wrap: wrap }
+.big { font-family: var(--f-mono); font-size: 1.3rem; font-weight: 700 }
+.meter { height: 10px; border-radius: 99px; background: var(--chip); overflow: hidden }
+.meter i { display: block; height: 100%; background: var(--navy) }
+.endstate { background: var(--gold-soft); border: 1px solid var(--gold); border-radius: 8px; padding: 12px 14px; display: grid; gap: 6px }
+.endstate b { font-family: var(--f-display); font-size: 1.3rem; letter-spacing: .04em; text-transform: uppercase }
+.decide { display: flex; gap: 6px; flex-wrap: wrap }
+.foot { display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; align-items: center }
+.hint { color: var(--muted); font-size: .82rem; margin: 0 }
+.ldcell { display: inline-flex; align-items: center; gap: 4px }
+.board th, .board td { font-size: .82rem; padding: 5px 6px }
+.board .day { background: var(--chip); font-weight: 700 }
+.log { font-size: .85rem; display: grid; gap: 4px; max-height: 220px; overflow: auto }
+.log div { border-left: 3px solid var(--line); padding-left: 8px }
+@media (prefers-reduced-motion: no-preference) { .fresh .die { animation: pop .25s ease-out } @keyframes pop { from { transform: scale(.6) } to { transform: scale(1) } } }
+</style>
+<style>
+.readout { border: 2px solid var(--navy); border-radius: 8px; overflow: hidden }
+.readout h3 { margin: 0; padding: 8px 12px; background: var(--navy); color: var(--navy-ink); font-family: var(--f-display); letter-spacing: .05em; text-transform: uppercase; font-size: 1.05rem }
+.readout .pad { gap: 8px }
+.readout ul { margin: 0; padding-left: 1.2em; display: grid; gap: 4px }
+.rcount { display: inline-flex; align-items: center; gap: 6px; font-family: var(--f-mono); font-weight: 700 }
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Island Spoke Proctor Calculator</h1>
+      <p class="sub">Operation Island Spoke · LLAB 7 · Enter the plan (jets and repairs), press Execute, read the readout aloud.</p>
+    </div>
+    <nav class="tabs" id="tabs" aria-label="Day"></nav>
+  </header>
+  <div class="grid">
+    <section class="panel">
+      <div class="bar"><h2 id="dayTitle"></h2><span class="meta" id="dayMeta"></span></div>
+      <div class="pad" id="dayBody"></div>
+    </section>
+    <aside style="display:grid;gap:16px;min-width:0">
+      <section class="panel">
+        <div class="bar"><h2>Phase Timer</h2><span class="meta" id="clock"></span></div>
+        <div class="pad">
+          <div class="prow"><span id="tLabel">Ready</span><span class="big" id="tDisplay" style="font-size:2.2rem">13:00</span></div>
+          <div class="decide">
+            <button class="btn" data-tm="780" data-lb="Plan">Plan 13:00</button>
+            <button class="btn" data-tm="300" data-lb="Brief">Brief 5:00</button>
+            <button class="btn" data-tm="120" data-lb="Dice">Dice 2:00</button>
+          </div>
+          <div class="decide"><button class="btn primary" id="tGo">Start</button><button class="btn" id="tReset">Reset</button></div>
+          <p class="hint" id="tSched"></p>
+        </div>
+      </section>
+      <section class="panel">
+        <div class="bar"><h2>Wing Points</h2><span class="meta" id="pointsMeta"></span></div>
+        <div class="pad">
+          <div class="prow"><label for="posture">Shift posture</label>
+            <select id="posture"><option value="normal">Normal</option><option value="extended">Extended 12s: costs 3, repairs cost 1 less</option><option value="rest">Rest: +3 points, flying costs 1 more</option></select></div>
+          <div class="scroll"><table><tbody id="pointsBody"></tbody></table></div>
+          <div class="meter"><i id="meterFill"></i></div>
+          <div class="prow"><strong>Remaining</strong><span class="big" id="pLeft">14</span></div>
+        </div>
+      </section>
+      <section class="panel">
+        <div class="bar"><h2>Fleet</h2><span class="meta" id="readyMeta"></span></div>
+        <div class="pad">
+          <div class="scroll"><table>
+            <thead><tr><th>Jet</th><th class="num">Ready</th><th class="num">Down</th><th class="num">Out</th><th class="num">Flying</th></tr></thead>
+            <tbody id="fleetBody"></tbody>
+          </table></div>
+        </div>
+      </section>
+      <section class="panel">
+        <div class="bar"><h2>Repairs (plan before the roll)</h2></div>
+        <div class="pad">
+          <div class="scroll"><table>
+            <thead><tr><th>Jet</th><th class="num">Down</th><th class="num">Fix</th><th class="num">Cannibalize</th></tr></thead>
+            <tbody id="repairBody"></tbody>
+          </table></div>
+          <p class="hint">Only jets that were Down at the start of the day can be repaired. Repaired jets are Ready tomorrow. Cannibalize strips 1 Down jet for good to fix another of the same type for 0 points.</p>
+        </div>
+      </section>
+    </aside>
+  </div>
+  <section class="panel">
+    <div class="bar"><h2>Day-by-Day Board</h2><span class="meta">Matches the paper Availability Board</span></div>
+    <div class="pad"><div class="scroll"><table class="board" id="board"></table></div></div>
+  </section>
+  <section class="panel">
+    <div class="bar"><h2>Export</h2><span class="meta">For the debrief and records</span></div>
+    <div class="pad">
+      <div class="prow" style="justify-content:flex-start"><label for="group">Group</label>
+        <select id="group"><option>Group 1 - SAC Basement</option><option>Group 2 - Navy Classroom</option><option>Group 3 - Army Classroom</option><option>Group 4 - Cadet Classroom</option></select></div>
+      <div class="decide">
+        <button class="btn primary" id="expCsv">Export spreadsheet (.csv)</button>
+        <button class="btn" id="expTxt">Export after-action summary (.txt)</button>
+        <button class="btn" id="expCopy">Copy summary</button>
+      </div>
+      <p class="hint" id="expMsg">The spreadsheet opens in Excel or Google Sheets: the day-by-day board, every tasker with its dice, repairs, and points by day.</p>
+      <textarea id="expBox" rows="8" hidden style="width:100%;font-family:var(--f-mono);font-size:.8rem;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:8px" aria-label="Summary text"></textarea>
+    </div>
+  </section>
+  <section class="panel">
+    <div class="bar"><h2>Log</h2><button class="btn" id="argBtn" style="background:var(--panel)">Argument roll (50%)</button></div>
+    <div class="pad"><div class="log" id="log"></div></div>
+  </section>
+  <div class="foot">
+    <p class="hint">Saved in this browser only. Each room's Proctor runs their own copy.</p>
+    <span id="resetWrap"></span>
+  </div>
+</div>
+
+<script>
+const AC = {
+  F22: { name: 'F-22', target: 2, repair: 4, fly: 4, fix: 5, noStrike: true },
+  F35: { name: 'F-35A', target: 3, repair: 3, fly: 2, fix: 3 },
+  F15: { name: 'F-15EX', target: 4, repair: 2, fly: 2, fix: 3 },
+  F16: { name: 'F-16', target: 5, repair: 1, fly: 1, fix: 2 },
+};
+const TYPES = Object.keys(AC);
+const DAYS = [
+  { n: 1, name: 'Show of Force', budget: 14, lead: 'GLP Lead #1',
+    taskers: [
+      { name: 'Fly a show of force over the Marianas', ok: "China's exercise winds down early.", bad: 'China keeps massing. The pressure on Guam grows.' },
+      { name: 'Fly a deterrence CAP', ok: 'The CAP holds. No Chinese aircraft approach.', bad: 'Chinese fighters probe the air defense zone unchallenged.' },
+      { name: 'Escort the bomber task force', ok: 'The bombers complete the flyover.', bad: 'The bombers turn back early without escort.' },
+      { name: '0930 inject: lost C-17 and 8 crew', decision: true, refuel: true, ok: 'The C-17 is refueled and all 8 crew are housed and fed.', bad: 'The crew is left unaccounted for, or the C-17 is ignored.' },
+    ] },
+  { n: 2, name: 'FONOP Escort', budget: 14, lead: 'GLP Lead #1',
+    taskers: [
+      { name: 'Provide air cover for the Navy FONOP', ok: "The FONOP completes its transit. China's ships break off.", bad: 'Chinese fighters harass the Navy ships through the transit.' },
+      { name: 'Fly DCA over Guam', ok: "Guam's airspace stays clear.", bad: 'A Chinese drone overflies Andersen.' },
+      { name: 'Escort the P-8 patrol', ok: 'The P-8 locates the Chinese carrier.', bad: 'The P-8 is chased off before finding the carrier.' },
+    ] },
+  { n: 3, name: 'Strike Ashore', budget: 14, lead: 'GLP Lead #2',
+    taskers: [
+      { name: 'Strike Chinese forces ashore', strike: true, ok: "China's forces ashore are hit hard.", bad: "The strike misses. China's forces hold their ground." },
+      { name: 'Escort the strike package', ok: 'The strike package is covered in and out.', bad: 'The strike package fights its way in alone.' },
+      { name: 'Fly DCA over Guam', ok: "Guam's airspace stays clear.", bad: "Chinese aircraft reach the edge of Guam's airspace." },
+      { name: '1015 inject: 6 casualties', decision: true, ok: 'MEDEVAC is requested and the triage order puts the arterial bleed first.', bad: 'No MEDEVAC request, or the arterial bleed is not treated first.' },
+    ] },
+  { n: 4, name: 'Defend Andersen', budget: 14, lead: 'GLP Lead #2', opening: true,
+    taskers: [
+      { name: 'Intercept the cruise missile wave', ok: 'The missiles are shot down short of the base.', bad: 'Missiles hit the flightline.' },
+      { name: 'Engage the Chinese fighters escorting the raid', ok: 'The fighter escort is broken up.', bad: 'Chinese fighters press the attack on Andersen.' },
+      { name: 'Protect the tanker orbit', ok: 'The tankers stay on station.', bad: 'The tankers withdraw. Jets are short on fuel.' },
+      { name: 'Cover Apra Harbor and the Navy ships in port', ok: 'The harbor is covered.', bad: 'Navy ships in port take hits.' },
+      { name: 'Fly a CAP over Saipan and Tinian', ok: 'The northern islands stay covered.', bad: 'Chinese aircraft roam the northern Marianas.' },
+      { name: "Strike China's missile launchers", strike: true, ok: 'The launchers are destroyed.', bad: 'The launchers survive to fire again.' },
+    ] },
+];
+const KEY = 'island-spoke-proctor-v5';
+const START = { F22: { r: 2, d: 0, o: 0 }, F35: { r: 2, d: 1, o: 0 }, F15: { r: 3, d: 1, o: 0 }, F16: { r: 4, d: 1, o: 0 } };
+const clone = o => JSON.parse(JSON.stringify(o));
+const zero = () => ({ F22: 0, F35: 0, F15: 0, F16: 0 });
+function newDay(i, fleet) {
+  return { start: clone(fleet), live: clone(fleet), executed: false, closed: false, assign: DAYS[i].taskers.map(() => []), results: DAYS[i].taskers.map(() => null),
+    posture: 'normal', fix: zero(), can: zero(), refuel: false, opened: false, damaged: [], end: null };
+}
+function fresh() { return { cur: 0, days: [newDay(0, START)], log: [] }; }
+let S;
+try { S = JSON.parse(localStorage.getItem(KEY)) || fresh(); } catch (e) { S = fresh(); }
+function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
+const d6 = () => 1 + Math.floor(Math.random() * 6);
+// Random number from 0.0 to 99.9, from the browser's cryptographic generator when available
+function rnd() { try { const a = new Uint32Array(1); crypto.getRandomValues(a); return Math.floor(a[0] / 4294967296 * 1000) / 10; } catch (e) { return Math.floor(Math.random() * 1000) / 10; } }
+const pct = x => Math.round(x * 1000) / 10;
+const stamp = () => new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+const $ = id => document.getElementById(id);
+const esc = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+let view = S.cur, flash = '';
+const D = () => S.days[view], DEF = () => DAYS[view];
+const planning = () => view === S.cur && !D().executed;
+
+function need(type, tk) { return Math.min(6, Math.max(2, AC[type].target - (type === 'F15' && tk.strike ? 1 : 0))); }
+const pJet = (type, tk) => (7 - need(type, tk)) / 6;
+const odds = (js, tk) => js.length ? 1 - js.reduce((a, t) => a * (1 - pJet(t, tk)), 1) : 0;
+const dmgChance = js => js.length ? 1 - js.reduce((a, t) => a * (1 - AC[t].repair / 6), 1) : 0;
+
+function budget(d = D(), i = view) { return DAYS[i].budget + (d.posture === 'rest' ? 3 : 0); }
+function flyCost(d = D()) { const x = d.posture === 'rest' ? 1 : 0; return d.assign.flat().reduce((a, t) => a + AC[t].fly + x, 0); }
+function fixPrice(t, d = D()) { return Math.max(1, AC[t].fix - (d.posture === 'extended' ? 1 : 0)); }
+function fixCost(d = D()) { return TYPES.reduce((a, t) => a + d.fix[t] * fixPrice(t, d), 0); }
+function used(d = D()) { return flyCost(d) + fixCost(d) + (d.refuel ? 1 : 0) + (d.posture === 'extended' ? 3 : 0); }
+const left = (d = D(), i = view) => budget(d, i) - used(d);
+const flying = t => D().assign.flat().filter(x => x === t).length;
+const repairedCount = d => TYPES.reduce((a, t) => a + d.fix[t] + d.can[t], 0);
+const readyOf = f => TYPES.reduce((a, t) => a + f[t].r, 0);
+function log(m) { S.log.unshift(`${stamp()} Day ${view + 1}: ${m}`); S.log = S.log.slice(0, 150); }
+function deny(m) { flash = m; render(); }
+
+// ---------- planning actions ----------
+function addJet(i) {
+  const tk = DEF().taskers[i], t = $('ty' + i).value, d = D();
+  if (tk.strike && AC[t].noStrike) return deny('An F-22 carries air-to-air weapons only. It cannot fly a strike tasker.');
+  if (flying(t) >= d.live[t].r) return deny(`No ${AC[t].name} left. All ${d.live[t].r} Ready ${AC[t].name}s are already assigned.`);
+  const cost = AC[t].fly + (d.posture === 'rest' ? 1 : 0);
+  if (cost > left()) return deny(`Not enough points. Flying an ${AC[t].name} costs ${cost} and only ${left()} remain.`);
+  d.assign[i].push(t); flash = ''; save(); render();
+}
+function planFix(t, delta, kind) {
+  const d = D(), startDown = d.start[t].d - (view === 3 ? 0 : 0);
+  const avail = d.live[t].d; // Down right now (start of day plus opening strike), nothing damaged yet in planning
+  if (kind === 'fix') {
+    if (delta > 0) {
+      if (d.fix[t] + 2 * d.can[t] + 1 > avail) return deny(`No more Down ${AC[t].name}s to repair.`);
+      if (fixPrice(t) > left()) return deny(`Not enough points. Repairing an ${AC[t].name} costs ${fixPrice(t)} and only ${left()} remain.`);
+      d.fix[t]++;
+    } else if (d.fix[t] > 0) d.fix[t]--;
+  } else {
+    if (delta > 0) {
+      if (d.fix[t] + 2 * (d.can[t] + 1) > avail) return deny(`Cannibalizing needs 2 Down ${AC[t].name}s that are not already being repaired.`);
+      d.can[t]++;
+    } else if (d.can[t] > 0) d.can[t]--;
+  }
+  flash = ''; save(); render();
+}
+function openingStrike() {
+  const d = D(), hit = [];
+  for (let k = 0; k < 2; k++) {
+    const pool = []; TYPES.forEach(t => { for (let n = 0; n < d.live[t].r - 0; n++) pool.push(t); });
+    if (!pool.length) break;
+    const t = pool[Math.floor(Math.random() * pool.length)]; d.live[t].r--; d.live[t].d++; hit.push(AC[t].name);
+  }
+  d.opened = true; d.openHit = hit; log(`Opening strike: ${hit.join(' and ')} knocked out`); save(); render();
+}
+function execute() {
+  const d = D(), P = DEF();
+  if (P.opening && !d.opened) return deny('Apply the opening strike first.');
+  if (left() < 0) return deny('The plan is over budget.');
+  if (!P.taskers.every((t, i) => !t.decision || d.results[i])) return deny('Mark the inject as success or failure first.');
+  P.taskers.forEach((tk, i) => {
+    if (tk.decision) return;
+    const rolls = d.assign[i].map(t => { const sp = pct(pJet(t, tk)), dp = pct(AC[t].repair / 6), m = rnd(), dmg = rnd(); return { t, m, sp, hit: m < sp, dmg, dp, down: dmg < dp }; });
+    d.results[i] = { rolls, success: rolls.some(r => r.hit) };
+    log(`${tk.name}: ${rolls.length ? rolls.map(r => `${AC[r.t].name} rolled ${r.m.toFixed(1)} vs ${r.sp}%${r.down ? ` (damage ${r.dmg.toFixed(1)} vs ${r.dp}%: DOWN)` : ''}`).join(', ') : 'uncovered'} = ${d.results[i].success ? 'SUCCESS' : 'FAILURE'}`);
+  });
+  // repairs planned before the roll come back tomorrow; damage applies now
+  TYPES.forEach(t => {
+    const f = d.live[t];
+    f.d -= d.fix[t]; f.r += d.fix[t];
+    f.d -= 2 * d.can[t]; f.o += d.can[t]; f.r += d.can[t];
+  });
+  d.damaged = [];
+  d.results.forEach(r => r && r.rolls && r.rolls.forEach(x => { if (x.down) { d.live[x.t].r--; d.live[x.t].d++; d.damaged.push(x.t); } }));
+  d.executed = true; d.rolledAt = stamp(); flash = '';
+  log(`Executed. ${d.damaged.length} damaged, ${repairedCount(d)} repaired. ${readyOf(d.live)} of 14 Ready tomorrow.`);
+  save(); render();
+}
+function closeDay() {
+  const d = D(); d.closed = true; d.end = clone(d.live);
+  if (view < 3) { S.days.push(newDay(view + 1, d.end)); S.cur = view + 1; view = S.cur; }
+  save(); render();
+}
+const names = list => { const c = {}; list.forEach(t => c[t] = (c[t] || 0) + 1); return Object.keys(c).map(t => `${c[t]} ${AC[t].name}`).join(', ') || 'none'; };
+
+// ---------- render ----------
+function renderTabs() {
+  $('tabs').innerHTML = DAYS.map((p, i) => { const d = S.days[i], tag = !d ? 'locked' : d.closed ? 'done' : d.executed ? 'rolled' : 'planning';
+    return `<button class="tab" role="tab" aria-selected="${i === view}" data-i="${i}" ${d ? '' : 'disabled'}>Day ${p.n}<small>${tag}</small></button>`; }).join('');
+  $('tabs').querySelectorAll('.tab').forEach(b => b.onclick = () => { view = +b.dataset.i; flash = ''; render(); });
+}
+function readout() {
+  const d = D(), P = DEF(), wins = P.taskers.filter((t, i) => !t.decision && d.results[i] && d.results[i].success).length, total = P.taskers.filter(t => !t.decision).length;
+  const fixed = []; TYPES.forEach(t => { for (let k = 0; k < d.fix[t] + d.can[t]; k++) fixed.push(t); });
+  const still = []; TYPES.forEach(t => { for (let k = 0; k < d.live[t].d; k++) still.push(t); });
+  const out = []; TYPES.forEach(t => { for (let k = 0; k < d.can[t]; k++) out.push(t); });
+  let h = `<div class="readout"><h3>Proctor readout: Day ${P.n}</h3><div class="pad">
+    <div><strong>${wins} of ${total} taskers succeeded.</strong> <span class="hint">Rolled at ${d.rolledAt || ''}</span></div><ul>`;
+  P.taskers.forEach((tk, i) => { const r = d.results[i]; if (!r) return; h += `<li><strong>${r.success ? 'SUCCESS' : 'FAILURE'}</strong>, ${esc(tk.name)}: <em>"${esc(r.success ? tk.ok : tk.bad)}"</em></li>`; });
+  h += `</ul><div><strong>Lost today (damaged, now Down):</strong> ${names(d.damaged)}</div>
+    <div><strong>Repaired (Ready tomorrow):</strong> ${names(fixed)}${out.length ? `. Stripped for parts and gone: ${names(out)}` : ''}</div>
+    <div><strong>Still Down going into ${P.n < 4 ? 'Day ' + (P.n + 1) : 'ENDEX'}:</strong> ${names(still)}</div>
+    <div><strong>Ready ${P.n < 4 ? 'tomorrow' : 'at ENDEX'}:</strong> ${readyOf(d.live)} of 14</div>`;
+  if (P.n === 4) h += `<div class="endstate"><b>End state: ${wins >= 4 ? 'Andersen holds.' : 'Andersen is overwhelmed.'}</b><span>${wins} of 6 Day 4 taskers succeeded. ${readyOf(d.live)} of 14 jets Ready.</span></div>`;
+  return h + `</div></div>`;
+}
+function renderDay() {
+  const P = DEF(), d = D(), pl = planning();
+  $('dayTitle').textContent = `Day ${P.n}: ${P.name}`;
+  $('dayMeta').textContent = `${P.lead} · ${P.budget} Wing Points${d.closed ? ' · closed' : d.executed ? ' · rolled' : ' · planning'}`;
+  let h = '';
+  if (flash) h += `<div class="warn" role="alert">${esc(flash)}</div>`;
+  if (P.opening && pl) h += `<div class="step red"><span><strong>Opening strike:</strong> 2 Ready jets go Down before planning. ${d.opened ? `Hit: ${esc(d.openHit.join(' and '))}.` : 'Apply it first and tell Maintenance which jets.'}</span><button class="btn" id="openBtn" ${d.opened ? 'disabled' : ''}>${d.opened ? 'Applied' : 'Apply opening strike'}</button></div>`;
+  if (pl) h += `<p class="hint">Step 1: add the jets Ops assigned and the repairs Maintenance planned. Step 2: press Execute. Each jet gets two random numbers from 0 to 99.9: one against its success %, one against its damage %. Below the % = it happens. Step 3: read the readout aloud.</p>`;
+  P.taskers.forEach((tk, i) => {
+    const res = d.results[i];
+    if (tk.decision) {
+      h += `<div class="tasker"><div class="t-head"><div class="t-name">${esc(tk.name)}</div><span class="t-loads">Wing CC decision</span></div><div class="t-body">
+        ${tk.refuel && pl ? `<label class="prow" style="justify-content:flex-start"><input type="checkbox" id="refuel" ${d.refuel ? 'checked' : ''}> Refuel the C-17 (1 point)</label>` : ''}
+        ${pl ? `<div class="decide"><button class="btn" data-dec="${i}" data-v="1">Mark success</button><button class="btn" data-dec="${i}" data-v="0">Mark failure</button></div>` : ''}
+        ${res ? verdict(res.success, tk) : ''}</div></div>`;
+      return;
+    }
+    const js = d.assign[i];
+    const rows = js.map((t, k) => { const r = res && res.rolls[k];
+      const dice = r ? `<span class="die ${r.hit ? 'hit' : 'miss'}">Success: rolled ${r.m.toFixed(1)} vs ${r.sp}% ${r.hit ? 'HIT' : 'MISS'}</span><span class="die ${r.down ? 'miss' : 'hit'}">Damage: rolled ${r.dmg.toFixed(1)} vs ${r.dp}% ${r.down ? 'DOWN' : 'OK'}</span>`
+        : `<span class="die">${pct(pJet(t, tk))}% success</span><span class="die">${pct(AC[t].repair / 6)}% damage</span>`;
+      return `<div class="jet"><span class="nm">${esc(AC[t].name)}</span>${dice}${pl ? `<button class="x" aria-label="Remove ${esc(AC[t].name)}" data-rm="${i}:${k}">×</button>` : ''}</div>`; }).join('');
+    const opts = TYPES.filter(t => !(tk.strike && AC[t].noStrike)).map(t => `<option value="${t}">${AC[t].name}</option>`).join('');
+    h += `<div class="tasker"><div class="t-head"><div><div class="t-name">${i + 1}. ${esc(tk.name)}</div>
+      <div class="t-loads">${tk.strike ? 'Strike: no F-22 · F-15EX +1' : 'Any jet'}</div></div>
+      <div class="odds">${js.length ? Math.round(odds(js, tk) * 100) + '% success' : 'Uncovered'}${js.length ? `<small>${Math.round(dmgChance(js) * 100)}% at least 1 jet damaged</small>` : ''}</div></div>
+      <div class="t-body">${js.length ? `<div class="jets">${rows}</div>` : ''}
+      ${res ? verdict(res.success, tk) : pl ? `<div class="add"><select id="ty${i}" aria-label="Aircraft">${opts}</select><button class="btn" data-add="${i}">Add jet</button></div>` : ''}</div></div>`;
+  });
+  if (pl) h += `<div class="foot"><span class="hint">Uncovered taskers fail automatically.</span><button class="btn primary" id="execBtn">Execute Day ${P.n}: roll every jet</button></div>`;
+  if (d.executed) h += readout();
+  if (d.executed && !d.closed && view === S.cur) h += `<div class="foot"><span class="hint">After reading the readout, close the day. Down jets carry forward.</span><button class="btn gold" id="closeBtn">${P.n === 4 ? 'Close Day 4 (ENDEX)' : `Close Day ${P.n}, start Day ${P.n + 1}`}</button></div>`;
+  $('dayBody').innerHTML = h;
+  const q = s => $('dayBody').querySelectorAll(s);
+  q('[data-add]').forEach(b => b.onclick = () => addJet(+b.dataset.add));
+  q('[data-rm]').forEach(b => b.onclick = () => { const [i, k] = b.dataset.rm.split(':').map(Number); D().assign[i].splice(k, 1); flash = ''; save(); render(); });
+  q('[data-dec]').forEach(b => b.onclick = () => { const i = +b.dataset.dec; D().results[i] = { decision: true, success: b.dataset.v === '1' }; log(`${P.taskers[i].name}: ${b.dataset.v === '1' ? 'SUCCESS' : 'FAILURE'}`); save(); render(); });
+  const rf = $('refuel'); if (rf) rf.onchange = () => { if (rf.checked && left() < 1) { rf.checked = false; return deny('Not enough points to refuel the C-17.'); } D().refuel = rf.checked; save(); render(); };
+  const eb = $('execBtn'); if (eb) eb.onclick = execute;
+  const cb = $('closeBtn'); if (cb) cb.onclick = closeDay;
+  const ob = $('openBtn'); if (ob) ob.onclick = openingStrike;
+}
+const verdict = (ok, tk) => `<div class="verdict ${ok ? 'ok' : 'bad'}"><b>${ok ? 'SUCCESS' : 'FAILURE'}</b><span>Read: "${esc(ok ? tk.ok : tk.bad)}"</span></div>`;
+function renderFleet() {
+  const d = D(), f = d.live, pl = planning();
+  $('fleetBody').innerHTML = TYPES.map(t => `<tr><td><strong>${AC[t].name}</strong></td><td class="num">${f[t].r}</td><td class="num">${f[t].d}</td><td class="num">${f[t].o}</td><td class="num">${pl ? flying(t) : '-'}</td></tr>`).join('')
+    + `<tr><td><strong>Total</strong></td><td class="num"><strong>${readyOf(f)}</strong></td><td class="num">${TYPES.reduce((a, t) => a + f[t].d, 0)}</td><td class="num">${TYPES.reduce((a, t) => a + f[t].o, 0)}</td><td class="num">${pl ? d.assign.flat().length : '-'}</td></tr>`;
+  $('readyMeta').textContent = d.executed ? `${readyOf(f)} of 14 Ready tomorrow` : `${readyOf(f)} of 14 Ready today`;
+  $('repairBody').innerHTML = TYPES.map(t => `<tr><td>${AC[t].name}</td><td class="num">${pl ? f[t].d : '-'}</td>
+    <td class="num"><span class="rcount">${pl ? `<button class="mini" data-fx="${t}:-1" aria-label="One fewer ${AC[t].name} repair">-</button>` : ''}${d.fix[t]}${pl ? `<button class="mini" data-fx="${t}:1" aria-label="Repair one more ${AC[t].name}">+</button>` : ''}</span><br><span class="hint">${fixPrice(t)} pts each</span></td>
+    <td class="num"><span class="rcount">${pl ? `<button class="mini" data-cn="${t}:-1" aria-label="Undo cannibalize ${AC[t].name}">-</button>` : ''}${d.can[t]}${pl ? `<button class="mini" data-cn="${t}:1" aria-label="Cannibalize ${AC[t].name}">+</button>` : ''}</span></td></tr>`).join('');
+  document.querySelectorAll('[data-fx]').forEach(b => b.onclick = () => { const [t, v] = b.dataset.fx.split(':'); planFix(t, +v, 'fix'); });
+  document.querySelectorAll('[data-cn]').forEach(b => b.onclick = () => { const [t, v] = b.dataset.cn.split(':'); planFix(t, +v, 'can'); });
+}
+function renderPoints() {
+  const d = D(), b = budget(), u = used();
+  $('posture').value = d.posture; $('posture').disabled = !planning();
+  $('pointsMeta').textContent = `Day ${view + 1} · budget ${b}`;
+  $('pointsBody').innerHTML = [['Flying (Ops)', flyCost()], ['Repairs (Maintenance)', fixCost()], ['C-17 refuel', d.refuel ? 1 : 0], ['Extended shifts', d.posture === 'extended' ? 3 : 0]]
+    .map(([k, v]) => `<tr><td>${k}</td><td class="num">${v}</td></tr>`).join('') + `<tr><td><strong>Used</strong></td><td class="num"><strong>${u} / ${b}</strong></td></tr>`;
+  $('pLeft').textContent = b - u; $('meterFill').style.width = Math.min(100, (u / b) * 100) + '%';
+}
+$('posture').onchange = e => { const d = D(), prev = d.posture; d.posture = e.target.value;
+  if (left() < 0) { d.posture = prev; e.target.value = prev; return deny('Not enough points for that shift posture.'); }
+  log(`Shift posture: ${d.posture}`); flash = ''; save(); render(); };
+function renderBoard() {
+  let h = `<thead><tr><th>Day</th><th>Jet</th><th class="num">Ready</th><th class="num">Down</th><th class="num">Out</th><th class="num">Damaged</th><th class="num">Repaired</th><th class="num">Repair pts</th><th class="num">Taskers</th></tr></thead><tbody>`;
+  DAYS.forEach((P, i) => {
+    const d = S.days[i];
+    if (!d) { h += `<tr><td class="day">Day ${P.n}</td><td colspan="8" class="hint">Not started</td></tr>`; return; }
+    const f = d.end || d.live, wins = P.taskers.filter((t, k) => !t.decision && d.results[k] && d.results[k].success).length, total = P.taskers.filter(t => !t.decision).length;
+    TYPES.forEach((t, k) => {
+      h += `<tr>${k === 0 ? `<td class="day" rowspan="5">Day ${P.n}<br><span class="hint">${d.executed ? 'end of day' : 'planning'}</span></td>` : ''}
+        <td>${AC[t].name}</td><td class="num">${f[t].r}</td><td class="num">${f[t].d}</td><td class="num">${f[t].o}</td>
+        <td class="num">${d.damaged.filter(x => x === t).length}</td><td class="num">${d.fix[t] + d.can[t]}</td><td class="num">${d.fix[t] * fixPrice(t, d)}</td>
+        ${k === 0 ? `<td class="num" rowspan="5">${d.executed ? `${wins} / ${total}` : '-'}</td>` : ''}</tr>`;
+    });
+    h += `<tr><td><strong>Total</strong></td><td class="num"><strong>${readyOf(f)}</strong></td><td class="num">${TYPES.reduce((a, t) => a + f[t].d, 0)}</td><td class="num">${TYPES.reduce((a, t) => a + f[t].o, 0)}</td><td class="num">${d.damaged.length}</td><td class="num">${repairedCount(d)}</td><td class="num">${fixCost(d)}</td></tr>`;
+  });
+  $('board').innerHTML = h + '</tbody>';
+}
+function renderLog() { $('log').innerHTML = S.log.length ? S.log.map(l => `<div>${esc(l)}</div>`).join('') : '<div class="hint">No rolls yet. Day 1 starts with 11 of 14 Ready: 1 F-35A, 1 F-15EX, and 1 F-16 are Down.</div>'; }
+$('argBtn').onclick = () => { const r = rnd(); log(`Argument roll: ${r.toFixed(1)} vs 50% = ${r < 50 ? 'SUCCESS' : 'FAILURE'}`); save(); renderLog(); };
+
+// ---------- export ----------
+const csvq = v => { const s = String(v ?? ''); return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
+const row = a => a.map(csvq).join(',');
+function buildCsv() {
+  const out = [row(['Operation Island Spoke', $('group').value, new Date().toLocaleString()]), '', row(['AVAILABILITY BOARD (end of each day)']),
+    row(['Day', 'Aircraft', 'Ready', 'Down', 'Out', 'Damaged today', 'Repaired today', 'Repair points'])];
+  S.days.forEach((d, i) => { const f = d.end || d.live, tag = `Day ${i + 1}${d.executed ? '' : ' (planning)'}`;
+    TYPES.forEach(t => out.push(row([tag, AC[t].name, f[t].r, f[t].d, f[t].o, d.damaged.filter(x => x === t).length, d.fix[t] + d.can[t], d.fix[t] * fixPrice(t, d)])));
+    out.push(row([tag, 'Total', readyOf(f), TYPES.reduce((a, t) => a + f[t].d, 0), TYPES.reduce((a, t) => a + f[t].o, 0), d.damaged.length, repairedCount(d), fixCost(d)])); });
+  out.push('', row(['TASKERS']), row(['Day', 'Tasker', 'Jets', 'Success rolls (vs %)', 'Damage rolls (vs %)', 'Result', 'Line read', 'Rolled at']));
+  S.days.forEach((d, i) => DAYS[i].taskers.forEach((tk, k) => { const r = d.results[k];
+    out.push(row([`Day ${i + 1}`, tk.name, tk.decision ? 'Wing CC decision' : (d.assign[k].map(t => AC[t].name).join('; ') || 'Uncovered'),
+      r && r.rolls ? r.rolls.map(x => `${x.m.toFixed(1)} vs ${x.sp}%`).join('; ') : '', r && r.rolls ? r.rolls.map(x => `${x.dmg.toFixed(1)} vs ${x.dp}%${x.down ? ' DOWN' : ''}`).join('; ') : '',
+      r ? (r.success ? 'SUCCESS' : 'FAILURE') : 'Not rolled', r ? (r.success ? tk.ok : tk.bad) : '', d.rolledAt || ''])); }));
+  out.push('', row(['WING POINTS']), row(['Day', 'Budget', 'Flying', 'Repairs', 'C-17 refuel', 'Extended shifts', 'Used', 'Posture']));
+  S.days.forEach((d, i) => out.push(row([`Day ${i + 1}`, budget(d, i), flyCost(d), fixCost(d), d.refuel ? 1 : 0, d.posture === 'extended' ? 3 : 0, used(d), d.posture])));
+  return out.join('\r\n');
+}
+function buildTxt() {
+  const L = ['OPERATION ISLAND SPOKE - AFTER-ACTION SUMMARY', $('group').value, new Date().toLocaleString(), ''];
+  S.days.forEach((d, i) => { const P = DAYS[i], f = d.end || d.live;
+    const wins = P.taskers.filter((t, k) => !t.decision && d.results[k] && d.results[k].success).length, total = P.taskers.filter(t => !t.decision).length;
+    L.push(`DAY ${P.n}: ${P.name.toUpperCase()}${d.executed ? '' : ' (not yet rolled)'}`, `Taskers succeeded: ${wins} of ${total}`);
+    P.taskers.forEach((tk, k) => { const r = d.results[k]; L.push(`  - ${tk.name}: ${r ? (r.success ? 'SUCCESS' : 'FAILURE') : 'not rolled'}${tk.decision ? '' : ` [${d.assign[k].map(t => AC[t].name).join(', ') || 'uncovered'}]`}`); });
+    L.push(`Damaged: ${names(d.damaged)}. Repaired: ${repairedCount(d)} for ${fixCost(d)} points. Points used: ${used(d)} of ${budget(d, i)} (${d.posture}).`, `Ready ${i < 3 ? 'for the next day' : 'at ENDEX'}: ${readyOf(f)} of 14`, ''); });
+  const d4 = S.days[3]; if (d4 && d4.executed) { const w = DAYS[3].taskers.filter((t, k) => d4.results[k].success).length; L.push(`END STATE: ${w >= 4 ? 'Andersen holds.' : 'Andersen is overwhelmed.'} ${w} of 6 Day 4 taskers succeeded. ${readyOf(d4.live)} of 14 jets Ready.`); }
+  return L.join('\r\n');
+}
+const fname = ext => `Island_Spoke_${$('group').value.split(' - ')[0].replace(' ', '')}_${new Date().toISOString().slice(0, 10)}.${ext}`;
+function showText(text, msg) { const b = $('expBox'); b.hidden = false; b.value = text; b.focus(); b.select(); $('expMsg').textContent = msg; }
+async function exportFile(ext, text) {
+  let dl = null;
+  try { dl = window.claude && window.claude.use ? await window.claude.use('downloads') : null; } catch (e) { dl = null; }
+  if (!dl) return showText(text, 'Saving files is not available in this view. The text is selected below: copy it into a file or spreadsheet.');
+  try { await dl.save({ filename: fname(ext), data: text }); $('expMsg').textContent = `Saved ${fname(ext)}.`; }
+  catch (e) { if (e && e.code === 'declined') $('expMsg').textContent = 'Save cancelled.';
+    else if (e && e.code === 'rate_limited') $('expMsg').textContent = 'A save prompt is already open. Finish it, then try again.';
+    else showText(text, 'Saving files is not available in this view. The text is selected below: copy it into a file or spreadsheet.'); }
+}
+$('expCsv').onclick = () => exportFile('csv', buildCsv());
+$('expTxt').onclick = () => exportFile('txt', buildTxt());
+$('expCopy').onclick = () => { const t = buildTxt();
+  try { navigator.clipboard.writeText(t).then(() => { $('expMsg').textContent = 'Summary copied. Paste it into an email or document.'; }, () => showText(t, 'Copy was blocked. The text is selected below: press Ctrl+C or Cmd+C.')); }
+  catch (e) { showText(t, 'Copy was blocked. The text is selected below: press Ctrl+C or Cmd+C.'); } };
+try { const g = localStorage.getItem(KEY + '-group'); if (g) $('group').value = g; } catch (e) {}
+$('group').onchange = () => { try { localStorage.setItem(KEY + '-group', $('group').value); } catch (e) {} };
+function wireReset() {
+  $('resetWrap').innerHTML = '<button class="btn" id="resetBtn">Reset game</button>';
+  $('resetBtn').onclick = () => {
+    $('resetWrap').innerHTML = '<span class="warn">Erase every roll and the fleet? </span><button class="btn primary" id="yes">Yes, reset</button> <button class="btn" id="no">Cancel</button>';
+    $('yes').onclick = () => { S = fresh(); view = 0; flash = ''; save(); wireReset(); render(); };
+    $('no').onclick = wireReset;
+  };
+}
+// ---------- timer ----------
+const SCHED = [['Plan 0920-0933', 'Brief 0933-0938', 'Dice 0938-0940'], ['Plan 0940-0953', 'Brief 0953-0958', 'Dice 0958-1000'], ['Plan 1005-1018', 'Brief 1018-1023', 'Dice 1023-1025'], ['Plan 1025-1038', 'Brief 1038-1043', 'Dice 1043-1045']];
+const T = { total: 780, left: 780, label: 'Plan', running: false, end: 0 };
+const mmss = n => `${Math.floor(Math.max(0, n) / 60)}:${String(Math.max(0, Math.ceil(n) % 60)).padStart(2, '0')}`;
+function drawTimer() {
+  $('tDisplay').textContent = mmss(T.left);
+  $('tDisplay').style.color = T.left <= 0 ? 'var(--bad)' : T.left <= 60 ? 'var(--gold)' : 'var(--ink)';
+  $('tLabel').textContent = T.left <= 0 ? `${T.label}: TIME` : `${T.label}${T.running ? ' (running)' : ''}`;
+  $('tGo').textContent = T.running ? 'Pause' : 'Start';
+  $('tSched').textContent = `Day ${view + 1} timehacks: ${SCHED[view].join(' · ')}`;
+}
+setInterval(() => {
+  $('clock').textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+  if (T.running) { T.left = (T.end - Date.now()) / 1000; if (T.left <= 0) { T.left = 0; T.running = false; } }
+  drawTimer();
+}, 250);
+document.querySelectorAll('[data-tm]').forEach(b => b.onclick = () => { T.total = T.left = +b.dataset.tm; T.label = b.dataset.lb; T.running = false; drawTimer(); });
+$('tGo').onclick = () => { if (T.running) { T.running = false; } else if (T.left > 0) { T.end = Date.now() + T.left * 1000; T.running = true; } drawTimer(); };
+$('tReset').onclick = () => { T.left = T.total; T.running = false; drawTimer(); };
+function render() { renderTabs(); renderDay(); renderFleet(); renderPoints(); renderBoard(); renderLog(); }
+wireReset(); render();
+</script>
