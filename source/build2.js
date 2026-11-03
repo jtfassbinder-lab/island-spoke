@@ -310,29 +310,63 @@ gmc.push(sb([['Intent from higher headquarters: ', { bold: true }], 'Deter China
 gmc.push(sb('Each day you get printed Day Orders with the situation and taskers. The Wing Commander ranks the taskers.'));
 gmc.push(sb('Assign jets to each tasker. You do not have enough to do everything well.'));
 gmc.push(sb('Keep enough jets ready for later. A jet that flies today may be broken tomorrow.'));
-gmc.push(sb([['Brief the Colonel after every phase ', { bold: true }], 'on what you did and ', ['why', { bold: true }], '.']));
+gmc.push(sb([['Brief the Colonel twice, ', { bold: true }], 'after Day 2 and after Day 4, on what you did and ', ['why', { bold: true }], '.']));
 gmc.push(P([['Your Cells:', { bold: true }]], { after: 40, before: 160 }));
-gmc.push(headerTable([2400, W - 2400], ['Cell', 'Your job each phase'], [
-  ['Wing Commander', 'Rank the taskers. Split the 14 points between Ops and Maintenance. Brief the Colonel.'],
+gmc.push(headerTable([2400, W - 2400], ['Cell', 'Your job each day'], [
+  ['Wing Commander', 'Rank the taskers. Split the 14 points between Ops and Maintenance. Lock the plan with the Proctor. Brief the Colonel.'],
   ['Ops', 'Assign Ready jets to taskers. Decide how many jets go on each.'],
   ['Maintenance', 'Report how many jets are Ready, Down, and Out. Commit points to fix broken jets before the roll.'],
 ], { firstFill: C.label, firstBold: true }));
 gmc.push(P([['Rules:', { bold: true }]], { after: 40, before: 160 }));
 [
   [['Success: ', { bold: true }], 'each jet on a tasker rolls its success rate from its card. If at least one jet succeeds, the tasker succeeds.'],
-  [['Points: ', { bold: true }], 'you get 14 per phase. Flying and fixing jets both cost points. Unused points are lost.'],
+  [['Points: ', { bold: true }], 'you get 14 per day. Flying and fixing jets both cost points. Unused points are lost.'],
   'Every jet that flies may come back broken. It stays down until Maintenance pays to fix it.',
   'An F-22 carries air-to-air weapons only, so it cannot fly a strike. When you brief, say what weapons each jet carries (see the Aircraft Reference Cards).',
   'Repairs are planned with the rest of the plan, before the dice. A repaired jet is Ready the next day.',
   'Maintenance reports first. Ops cannot plan until it does.',
+  [['Lock the plan: ', { bold: true }], 'at the 8-minute mark each day, the Wing Commander tells the Proctor which jets go on each tasker and which jets get fixed. 60 seconds. Then the dice.'],
   'Anything not covered: state the action, the result you want, and up to 3 reasons. The Proctor rules.',
 ].forEach(r => gmc.push(sb(r)));
-gmc.push(P([['Each Day (20 min): ', { bold: true }], 'Plan 13 min, brief the Colonel 5 min, dice 2 min.'], { after: 40, before: 160 }));
-gmc.push(P([['What to Brief (every phase):', { bold: true }]], { after: 40, before: 100 }));
-gmc.push(N([['Availability: ', { bold: true }], 'how many jets are Ready, by type.'], { ref: 'nums4' }));
-gmc.push(N([['Ranking: ', { bold: true }], 'your taskers in order, and why #1 is #1.'], { ref: 'nums4' }));
-gmc.push(N([['Jets: ', { bold: true }], 'which jets on which tasker, and what you left uncovered.'], { ref: 'nums4' }));
+gmc.push(P([['Timeline:', { bold: true }]], { after: 40, before: 160 }));
+gmc.push(headerTable([1500, W - 1500], ['Time', 'What happens'], [
+  ['0920-0930', 'Scenario and rules. GMC Lead #1 takes command.'],
+  ['0930-0935', 'GMC plan: Day 1 Orders out. Assign your cells. Maintenance reports.'],
+  ['0935-0945', 'Day 1. Plan, lock the plan, dice.'],
+  ['0945-0955', 'Day 2. Plan, lock the plan, dice.'],
+  ['0955-1005', 'GMC brief 1 to the Colonel: Days 1 and 2.'],
+  ['1005-1015', 'Unknown.'],
+  ['1015-1035', 'Days 3 and 4.'],
+  ['1035-1040', 'GMC brief 2 to the Colonel: Days 3 and 4.'],
+  ['1040-1045', 'Debrief.'],
+], { firstFill: C.label, firstBold: true, firstCenter: true }));
+gmc.push(P([['What to Brief (both briefs):', { bold: true }]], { after: 40, before: 160 }));
+gmc.push(N([['Results: ', { bold: true }], 'which taskers succeeded and failed each day, and why.'], { ref: 'nums4' }));
+gmc.push(N([['Availability: ', { bold: true }], 'how many jets are Ready, Down, and Out now, by type.'], { ref: 'nums4' }));
+gmc.push(N([['Ranking: ', { bold: true }], 'your taskers in order each day, and why #1 was #1.'], { ref: 'nums4' }));
+gmc.push(N([['Jets: ', { bold: true }], 'which jets went on which tasker, and what you left uncovered.'], { ref: 'nums4' }));
 gmc.push(N([['Points: ', { bold: true }], 'how you split flying and fixing, and why.'], { ref: 'nums4' }));
+gmc.push(N([['Next: ', { bold: true }], 'what you would change, and what the wing has left to fight with.'], { ref: 'nums4' }));
+
+// ---- Doctrine excerpts ----
+const dq = (src, text) => [P([[src, { bold: true, color: C.navy, size: 20 }]], { before: 140, after: 40 }), P([[text, { italics: true, size: 20 }]], { shade: C.boxBlue, after: 40 })];
+const dw = (t) => P([[t, { size: 18, color: C.grey }]], { after: 60 });
+gmc.push(sp(240));
+gmc.push(P([['DOCTRINE EXCERPTS', { bold: true, size: 32, color: C.navy }]], { align: CEN, after: 80, bottomRule: true }));
+gmc.push(P([['Read these before you plan. The Colonel will expect you to use them.', { size: 20 }]], { align: CEN, after: 120 }));
+gmc.push(...dq('Deterrence (AFDP 3-0, Operations, 2025)', '"Deterrence is the practice of discouraging an actor from taking unwanted action. Deterrence is an effect on the state of mind of an adversary brought about by the existence of a credible threat of unacceptable retaliation."'));
+gmc.push(dw('Days 1 and 2. Being seen is the mission. A wing that looks weak, or burns out its jets, is not a credible threat.'));
+gmc.push(...dq('Commander’s intent (JP 3-0, Joint Operations)', '"Commander’s intent is the commander’s clear and concise expression of what the force must do and the conditions the force must establish to accomplish the mission. It includes the purpose, end state, and associated risks."'));
+gmc.push(dw('Wing Commander: say it in three sentences. Every cadet in the room should be able to repeat it.'));
+gmc.push(...dq('Mission command (JP 3-0, Joint Operations)', '"Commanders delegate decisions to subordinates wherever possible, which minimizes detailed control and empowers subordinates’ initiative to make decisions based on the commander’s guidance rather than constant communications."'));
+gmc.push(dw('Ops and Maintenance work their problems. The commander decides the split and owns it.'));
+gmc.push(...dq('Mission command (AFDP 3-0, Operations, 2025)', '"The airpower tenet of mission command requires that subordinates understand their commander’s intent ..."'));
+gmc.push(dw('If you lose your commander, the intent is what is left.'));
+gmc.push(...dq('Economy of force (JP 3-0, Joint Operations)', '"The purpose of economy of force is to expend minimum essential combat power on secondary efforts to allocate the maximum possible combat power on primary efforts."'));
+gmc.push(dw('You cannot cover every tasker well. Pick the main effort and put your best jets there.'));
+gmc.push(...dq('Risk (JP 3-0, Joint Operations)', '"The commander determines the level of risk that is acceptable, with respect to aspects of operations, and should state this determination in commander’s intent." ... "Risk is inherent in military operations. Application of this principle includes prudent risk management, not undue caution."'));
+gmc.push(dw('Say out loud which tasker you are leaving thin and what it costs if it fails.'));
+gmc.push(P([['Sources: AFDP 3-0, Operations (22 January 2025); JP 3-0, Joint Operations (17 January 2017, Change 1, 22 October 2018).', { size: 16, color: C.grey }]], { before: 160 }));
 
 
 // ===================================================================
@@ -340,10 +374,10 @@ gmc.push(N([['Points: ', { bold: true }], 'how you split flying and fixing, and 
 // ===================================================================
 const ord = [];
 const OTIME = [
-  ['Plan 0920-0933', 'Brief the Colonel 0933-0938', 'Dice and readout 0938-0940'],
-  ['Plan 0940-0953', 'Brief the Colonel 0953-0958', 'Dice and readout 0958-1000'],
-  ['Plan 1005-1018', 'Brief the Colonel 1018-1023', 'Dice and readout 1023-1025'],
-  ['Plan 1025-1038', 'Brief the Colonel 1038-1043', 'Dice and readout 1043-1045'],
+  ['Organize and plan 0930-0943', 'Lock the plan with the Proctor, dice, and readout 0943-0945'],
+  ['Plan 0945-0953', 'Lock the plan with the Proctor, dice, and readout 0953-0955', 'Brief the Colonel on Days 1 and 2: 0955-1005'],
+  ['Rebuild the board and plan 1010-1023', 'Lock the plan with the Proctor, dice, and readout 1023-1025'],
+  ['Plan 1025-1033', 'Lock the plan with the Proctor, dice, and readout 1033-1035', 'Brief the Colonel on Days 3 and 4: 1035-1040'],
 ];
 const OUTLOOK = PHASES.map(p => p.forecast);
 PHASES.forEach((ph, i) => {
@@ -369,7 +403,7 @@ PHASES.forEach((ph, i) => {
 
 (async () => {
   fs.writeFileSync('Operation_Island_Spoke_POC_Guide.docx', await Packer.toBuffer(makeDoc(poc)));
-  fs.writeFileSync('Operation_Island_Spoke_GMC_Guide.docx', await Packer.toBuffer(makeDoc(gmc)));
+  fs.writeFileSync('Operation_Island_Spoke_GMC_Guide.docx', await Packer.toBuffer(makeDoc(gmc, 600)));
   fs.writeFileSync('Operation_Island_Spoke_GMC_Day_Orders.docx', await Packer.toBuffer(makeDoc(ord)));
   console.log('done');
 })();

@@ -65,29 +65,27 @@ ev.push(banner('EVALUATOR CARD  -  OPERATION ISLAND SPOKE', 'You grade the GLP l
 ev.push(sp(120));
 ev.push(P([['Your job: ', { bold: true }], 'watch the Wing Commander think, fill the Form 2, and debrief your lead. Do not speak during play. Grade the reasoning, not the dice.']));
 ev.push(headerTable([2300, W - 2300], ['When', 'You do'], [
-  ['0920-1000', 'Evaluate GLP Lead #1 (Days 1 and 2).'],
-  ['1000-1005', 'Take Lead #1 outside and debrief them on the Form 2.'],
-  ['1005-1045', 'Evaluate GLP Lead #2 (Days 3 and 4).'],
-  ['1045-1050', 'Take Lead #2 aside and debrief them.'],
+  ['0920-1005', 'Evaluate GLP Lead #1: explain, Days 1 and 2, and brief 1 to the Colonel.'],
+  ['1005-1015', 'Lead #1 evaluator: take Lead #1 outside and debrief them on the Form 2. Send them back in by 1015.'],
+  ['1005-1040', 'Lead #2 evaluator: evaluate the turnaround, plan 2, Days 3 and 4, and brief 2.'],
+  ['1040-1045', 'Take Lead #2 aside and debrief them on the Form 2.'],
 ], { firstFill: C.label, firstBold: true, firstCenter: true }));
 ev.push(H('What to watch each day', { before: 160, size: 24 }));
 ev.push(headerTable([1800, 4600, W - 6400], ['DAY', 'LOOK FOR', 'WARNING SIGN'], [
   [[['Day 1: Show of Force', { bold: true }]], 'Lead #1', 'Covers the taskers without burning both F-22s. Plans repairs for the 3 jets that start Down. Handles the C-17: refuels it and houses and feeds the 8 crew.', 'Flies everything because nothing shoots back. Ignores the C-17 crew.'],
   [[['Day 2: FONOP Escort', { bold: true }]], 'Lead #1', 'Decides which tasker matters most and puts the best jets there (the Navy has no missiles to defend itself). Balances flying today with repairs for tomorrow. Says what the wing must protect going forward.', 'One jet on every tasker with no reason given. No repairs planned.'],
-  [[['Turnaround', { bold: true }]], 'Lead #2', 'Takes charge within the first minute. Has Maintenance rebuild the board by asking about one aircraft type at a time.', 'Defers to the room. No one rebuilds the picture.'],
+  [[['Turnaround and plan 2', { bold: true }]], 'Lead #2', 'Takes charge within the first minute. Has Maintenance rebuild the board by asking about one aircraft type at a time.', 'Defers to the room. No one rebuilds the picture.'],
   [[['Day 3: Strike Ashore', { bold: true }]], 'Lead #2', 'No F-22 on the strike. Briefs bombs on the strike jets and covers the strike with an escort. Casualty inject: requests a MEDEVAC and treats the arterial bleed first.', 'Briefs air-to-air missiles for a strike. Ignores the casualties or gets the triage order wrong.'],
   [[['Day 4: Defend Andersen', { bold: true }]], 'Lead #2', 'Chooses which of the 6 taskers to cover well and which to leave thin, and names the risk. Puts the F-22s on air defense of the base.', 'Spreads one jet across all six. Cannot say what was left uncovered.'],
 ].map(r => [r[0], [[[r[1] + ': ', { bold: true }], r[2]]], r[3]]), { firstFill: C.label, firstBold: true }));
 ev.push(pageBreak());
-ev.push(H('Strong performance (every day)', { before: 0, size: 24 }));
-ev.push(headerTable([2600, W - 2600], ['LOOK FOR', 'WHAT IT SOUNDS LIKE'], [
-  ['Chooses what matters', 'Puts the best jets on the tasker that matters most and can say why.'],
-  ['Accepts risk on purpose', 'Leaves a tasker thin or uncovered and names the cost.'],
-  ['Thinks about tomorrow', 'Holds points for repairs and saves jets for the attack on the base.'],
-  ['Uses Maintenance', 'Waits for the Ready/Down report before planning.'],
-  ['Handles injects', 'Accounts for the C-17 crew. Requests MEDEVAC, arterial bleed first.'],
-  ['Briefs clearly', 'Availability, jets per tasker, points split, and why, in 5 minutes.'],
-  ['New lead (Lead #2)', 'Takes charge fast and has Maintenance rebuild the picture.'],
+ev.push(H('What you are grading (LLAB 7 objectives)', { before: 0, size: 24 }));
+ev.push(headerTable([2600, W - 2600], ['OBJECTIVE', 'WHAT IT LOOKS LIKE IN THIS GAME'], [
+  ['LoC 2.1 Followership and leadership', 'The lead gives Ops and Maintenance a task and lets them work. The cells act on the lead\u2019s intent without being told twice.'],
+  ['EC 2.1 Listening and collaboration', 'The lead hears both cells before deciding, pulls in the quiet cadet, and lets someone disagree without losing control of the room.'],
+  ['EC 3.1 Persuade and negotiate', 'Ops and Maintenance argue over the 14 points with reasons. The lead settles it and can justify the call to the Colonel.'],
+  ['EC 3.2 Inspire, align, manage change', 'The room can repeat the intent. After the bunker, Lead #2 resets the team within a minute.'],
+  ['WF 1.3 Wargaming', 'A workable plan each day, decisions defended at the brief, changes made for injects, and one real lesson named at the debrief.'],
 ], { hdr: C.green, firstFill: C.lightGreen, firstBold: true }));
 ev.push(H('Warning signs (every day)', { before: 160, size: 24 }));
 ev.push(headerTable([2600, W - 2600], ['WATCH FOR', 'NOTE IT'], [

@@ -123,11 +123,12 @@ th.num { font-family: var(--f-body) }
       <section class="panel">
         <div class="bar"><h2>Phase Timer</h2><span class="meta" id="clock"></span></div>
         <div class="pad">
-          <div class="prow"><span id="tLabel">Ready</span><span class="big" id="tDisplay" style="font-size:2.2rem">13:00</span></div>
+          <div class="prow"><span id="tLabel">Ready</span><span class="big" id="tDisplay" style="font-size:2.2rem">10:00</span></div>
           <div class="decide">
-            <button class="btn" data-tm="780" data-lb="Plan">Plan 13:00</button>
-            <button class="btn" data-tm="300" data-lb="Brief">Brief 5:00</button>
-            <button class="btn" data-tm="120" data-lb="Dice">Dice 2:00</button>
+            <button class="btn" data-tm="600" data-lb="Day">Day 10:00</button>
+            <button class="btn" data-tm="300" data-lb="Plan">Plan 5:00</button>
+            <button class="btn" data-tm="600" data-lb="Brief 1">Brief 10:00</button>
+            <button class="btn" data-tm="300" data-lb="Brief 2">Brief 5:00</button>
           </div>
           <div class="decide"><button class="btn primary" id="tGo">Start</button><button class="btn" id="tReset">Reset</button></div>
           <p class="hint" id="tSched"></p>
@@ -498,8 +499,8 @@ function wireReset() {
   };
 }
 // ---------- timer ----------
-const SCHED = [['Plan 0920-0933', 'Brief 0933-0938', 'Dice 0938-0940'], ['Plan 0940-0953', 'Brief 0953-0958', 'Dice 0958-1000'], ['Plan 1005-1018', 'Brief 1018-1023', 'Dice 1023-1025'], ['Plan 1025-1038', 'Brief 1038-1043', 'Dice 1043-1045']];
-const T = { total: 780, left: 780, label: 'Plan', running: false, end: 0 };
+const SCHED = [['Plan 0930-0943', 'C-17 inject 0940', 'Lock and roll 0943-0945'], ['Plan 0945-0953', 'Lock and roll 0953-0955', 'Brief 1 0955-1005'], ['Turnaround 1005', 'Plan 1010-1023', 'Casualties 1020', 'Lock and roll 1023-1025'], ['Opening strike 1025', 'Plan 1025-1033', 'Lock and roll 1033-1035', 'Brief 2 1035-1040']];
+const T = { total: 600, left: 600, label: 'Day', running: false, end: 0 };
 const mmss = n => `${Math.floor(Math.max(0, n) / 60)}:${String(Math.max(0, Math.ceil(n) % 60)).padStart(2, '0')}`;
 function drawTimer() {
   $('tDisplay').textContent = mmss(T.left);
