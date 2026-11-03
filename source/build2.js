@@ -354,19 +354,29 @@ const dw = (t) => P([[t, { size: 18, color: C.grey }]], { after: 60 });
 gmc.push(sp(240));
 gmc.push(P([['DOCTRINE EXCERPTS', { bold: true, size: 32, color: C.navy }]], { align: CEN, after: 80, bottomRule: true }));
 gmc.push(P([['Read these before you plan. The Colonel will expect you to use them.', { size: 20 }]], { align: CEN, after: 120 }));
+gmc.push(...dq('Wargaming (JP 5-0, Joint Planning, 2017)', '"COA wargaming is a conscious attempt to visualize the flow of the operation, [...] and other aspects of the OE."'));
+gmc.push(dw('That is this game. Each day, picture what your plan does to tomorrow before you lock it.'));
+gmc.push(...dq('Courses of action (JP 5-0, Joint Planning, 2017)', 'Joint planning "facilitates development of feasible, acceptable, adequate, distinguishable, and complete courses of action."'));
+gmc.push(dw('Test your plan: can the jets you have actually do it, is the risk worth it, and does it cover what matters?'));
+gmc.push(...dq('Planning (AFDP 5-0, Planning)', '"Planning is how Airmen address and solve complex problems."'));
+gmc.push(dw('You have minutes, not hours. Frame the problem first, then assign jets.'));
 gmc.push(...dq('Deterrence (AFDP 3-0, Operations, 2025)', '"Deterrence is the practice of discouraging an actor from taking unwanted action. Deterrence is an effect on the state of mind of an adversary brought about by the existence of a credible threat of unacceptable retaliation."'));
 gmc.push(dw('Days 1 and 2. Being seen is the mission. A wing that looks weak, or burns out its jets, is not a credible threat.'));
-gmc.push(...dq('Commander’s intent (JP 3-0, Joint Operations)', '"Commander’s intent is the commander’s clear and concise expression of what the force must do and the conditions the force must establish to accomplish the mission. It includes the purpose, end state, and associated risks."'));
+gmc.push(...dq('Commander\u2019s intent (JP 3-0, Joint Operations)', '"Commander\u2019s intent is the commander\u2019s clear and concise expression of what the force must do and the conditions the force must establish to accomplish the mission. It includes the purpose, end state, and associated risks."'));
 gmc.push(dw('Wing Commander: say it in three sentences. Every cadet in the room should be able to repeat it.'));
-gmc.push(...dq('Mission command (JP 3-0, Joint Operations)', '"Commanders delegate decisions to subordinates wherever possible, which minimizes detailed control and empowers subordinates’ initiative to make decisions based on the commander’s guidance rather than constant communications."'));
-gmc.push(dw('Ops and Maintenance work their problems. The commander decides the split and owns it.'));
-gmc.push(...dq('Mission command (AFDP 3-0, Operations, 2025)', '"The airpower tenet of mission command requires that subordinates understand their commander’s intent ..."'));
-gmc.push(dw('If you lose your commander, the intent is what is left.'));
+gmc.push(...dq('Mission command (AFDP 1-1, Mission Command, 2023)', '"Mission command is a philosophy of leadership that empowers Airmen to operate in uncertain, complex, and rapidly changing environments through trust, shared awareness, and understanding of commander\u2019s intent."'));
+gmc.push(dw('Ops and Maintenance work their own problems. The commander decides the split and owns it.'));
+gmc.push(...dq('Disciplined initiative (AFDP 1-1, Mission Command, 2023)', '"Disciplined initiative is the proactive application of inventiveness and creativity [...] when existing orders no longer fit the situation or when unforeseen threats or opportunities arise."'));
+gmc.push(dw('If you lose your commander or your records, act on the intent you were given. Do not wait to be told.'));
+gmc.push(...dq('Mission command (JP 3-0, Joint Operations)', '"Commanders delegate decisions to subordinates wherever possible, which minimizes detailed control and empowers subordinates\u2019 initiative to make decisions based on the commander\u2019s guidance rather than constant communications."'));
+gmc.push(dw('Give each cell a task and a time to report. Then let them work.'));
 gmc.push(...dq('Economy of force (JP 3-0, Joint Operations)', '"The purpose of economy of force is to expend minimum essential combat power on secondary efforts to allocate the maximum possible combat power on primary efforts."'));
 gmc.push(dw('You cannot cover every tasker well. Pick the main effort and put your best jets there.'));
-gmc.push(...dq('Risk (JP 3-0, Joint Operations)', '"The commander determines the level of risk that is acceptable, with respect to aspects of operations, and should state this determination in commander’s intent." ... "Risk is inherent in military operations. Application of this principle includes prudent risk management, not undue caution."'));
+gmc.push(...dq('Risk (JP 3-0, Joint Operations)', '"The commander determines the level of risk that is acceptable, with respect to aspects of operations, and should state this determination in commander\u2019s intent." [...] "Risk is inherent in military operations. Application of this principle includes prudent risk management, not undue caution."'));
 gmc.push(dw('Say out loud which tasker you are leaving thin and what it costs if it fails.'));
-gmc.push(P([['Sources: AFDP 3-0, Operations (22 January 2025); JP 3-0, Joint Operations (17 January 2017, Change 1, 22 October 2018).', { size: 16, color: C.grey }]], { before: 160 }));
+gmc.push(...dq('Agile combat employment (AFDP 3-99, DAF Role in JADO, 2021)', '"ACE is the Air Force\u2019s concept to provide a proactive and reactive operational scheme of maneuver [...] executed within operationally relevant threat timelines to increase survivability while generating combat power."'));
+gmc.push(dw('If the base is attacked, the wing still has to put jets in the air. What you saved is what you can generate.'));
+gmc.push(P([['Sources: AFDP 1-1, Mission Command (14 August 2023); AFDP 3-0, Operations (22 January 2025); AFDP 5-0, Planning (LeMay Center summary); AFDP 3-99, DAF Role in Joint All-Domain Operations (19 November 2021); JP 3-0, Joint Operations (17 January 2017, Change 1, 22 October 2018); JP 5-0, Joint Planning (16 June 2017). [...] marks text left out.', { size: 16, color: C.grey }]], { before: 160 }));
 
 
 // ===================================================================
