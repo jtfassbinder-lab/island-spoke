@@ -24,7 +24,6 @@ g.push(sub('Every day, in this order'));
 g.push(N([['Day 4 only: ', { bold: true }], 'press Apply opening strike first. Tell Maintenance which 2 jets went Down.'], { ref: 'nums' }));
 g.push(N([['Jets: ', { bold: true }], 'as the Wing CC briefs, add each jet to its tasker (pick the aircraft, press Add jet). A tasker with no jet fails.'], { ref: 'nums' }));
 g.push(N([['Repairs: ', { bold: true }], 'in the Repairs panel, press + under Fix once per jet Maintenance is repairing. Cannibalize needs 2 Down jets of the same type.'], { ref: 'nums' }));
-g.push(N([['Shift posture: ', { bold: true }], 'set it if they chose Extended or Rest. Otherwise leave Normal.'], { ref: 'nums' }));
 g.push(N([['Injects: ', { bold: true }], 'tick Refuel the C-17 if they did (Day 2). Mark each inject Success or Failure (criteria in Section 3).'], { ref: 'nums' }));
 g.push(N([['Execute: ', { bold: true }], 'press Execute Day. The calculator rolls every jet.'], { ref: 'nums' }));
 g.push(N([['Read the readout aloud, ', { bold: true }], 'top to bottom: each success or failure line, jets lost, jets repaired, what is still Down, jets Ready.'], { ref: 'nums' }));

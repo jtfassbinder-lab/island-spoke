@@ -135,8 +135,6 @@ th.num { font-family: var(--f-body) }
       <section class="panel">
         <div class="bar"><h2>Wing Points</h2><span class="meta" id="pointsMeta"></span></div>
         <div class="pad">
-          <div class="prow"><label for="posture">Shift posture</label>
-            <select id="posture"><option value="normal">Normal</option><option value="extended">Extended 12s: costs 3, repairs cost 1 less</option><option value="rest">Rest: +3 points, flying costs 1 more</option></select></div>
           <div class="scroll"><table><tbody id="pointsBody"></tbody></table></div>
           <div class="meter"><i id="meterFill"></i></div>
           <div class="prow"><strong>Remaining</strong><span class="big" id="pLeft">14</span></div>
@@ -414,15 +412,12 @@ function renderFleet() {
 }
 function renderPoints() {
   const d = D(), b = budget(), u = used();
-  $('posture').value = d.posture; $('posture').disabled = !planning();
   $('pointsMeta').textContent = `Day ${view + 1} · budget ${b}`;
-  $('pointsBody').innerHTML = [['Flying (Ops)', flyCost()], ['Repairs (Maintenance)', fixCost()], ['C-17 refuel', d.refuel ? 1 : 0], ['Extended shifts', d.posture === 'extended' ? 3 : 0]]
+  $('pointsBody').innerHTML = [['Flying (Ops)', flyCost()], ['Repairs (Maintenance)', fixCost()], ['C-17 refuel', d.refuel ? 1 : 0]]
     .map(([k, v]) => `<tr><td>${k}</td><td class="num">${v}</td></tr>`).join('') + `<tr><td><strong>Used</strong></td><td class="num"><strong>${u} / ${b}</strong></td></tr>`;
   $('pLeft').textContent = b - u; $('meterFill').style.width = Math.min(100, (u / b) * 100) + '%';
 }
-$('posture').onchange = e => { const d = D(), prev = d.posture; d.posture = e.target.value;
-  if (left() < 0) { d.posture = prev; e.target.value = prev; return deny('Not enough points for that shift posture.'); }
-  log(`Shift posture: ${d.posture}`); flash = ''; save(); render(); };
+
 function renderBoard() {
   let h = `<thead><tr><th>Day</th><th>Jet</th><th class="num">Ready</th><th class="num">Down</th><th class="num">Out</th><th class="num">Damaged</th><th class="num">Repaired</th><th class="num">Repair pts</th><th class="num">Taskers</th></tr></thead><tbody>`;
   DAYS.forEach((P, i) => {
@@ -456,8 +451,8 @@ function buildCsv() {
     out.push(row([`Day ${i + 1}`, tk.name, tk.decision ? 'Wing CC decision' : (d.assign[k].map(t => AC[t].name).join('; ') || 'Uncovered'),
       r && r.rolls ? r.rolls.map(x => `${x.m.toFixed(1)} vs ${x.sp}%`).join('; ') : '', r && r.rolls ? r.rolls.map(x => `${x.dmg.toFixed(1)} vs ${x.dp}%${x.down ? ' DOWN' : ''}`).join('; ') : '',
       r ? (r.success ? 'SUCCESS' : 'FAILURE') : 'Not rolled', r ? (r.success ? tk.ok : tk.bad) : '', d.rolledAt || ''])); }));
-  out.push('', row(['WING POINTS']), row(['Day', 'Budget', 'Flying', 'Repairs', 'C-17 refuel', 'Extended shifts', 'Used', 'Posture']));
-  S.days.forEach((d, i) => out.push(row([`Day ${i + 1}`, budget(d, i), flyCost(d), fixCost(d), d.refuel ? 1 : 0, d.posture === 'extended' ? 3 : 0, used(d), d.posture])));
+  out.push('', row(['WING POINTS']), row(['Day', 'Budget', 'Flying', 'Repairs', 'C-17 refuel', 'Used']));
+  S.days.forEach((d, i) => out.push(row([`Day ${i + 1}`, budget(d, i), flyCost(d), fixCost(d), d.refuel ? 1 : 0, used(d)])));
   return out.join('\r\n');
 }
 function buildTxt() {
@@ -466,7 +461,7 @@ function buildTxt() {
     const wins = P.taskers.filter((t, k) => !t.decision && d.results[k] && d.results[k].success).length, total = P.taskers.filter(t => !t.decision).length;
     L.push(`DAY ${P.n}: ${P.name.toUpperCase()}${d.executed ? '' : ' (not yet rolled)'}`, `Taskers succeeded: ${wins} of ${total}`);
     P.taskers.forEach((tk, k) => { const r = d.results[k]; L.push(`  - ${tk.name}: ${r ? (r.success ? 'SUCCESS' : 'FAILURE') : 'not rolled'}${tk.decision ? '' : ` [${d.assign[k].map(t => AC[t].name).join(', ') || 'uncovered'}]`}`); });
-    L.push(`Damaged: ${names(d.damaged)}. Repaired: ${repairedCount(d)} for ${fixCost(d)} points. Points used: ${used(d)} of ${budget(d, i)} (${d.posture}).`, `Ready ${i < 3 ? 'for the next day' : 'at ENDEX'}: ${readyOf(f)} of 14`, ''); });
+    L.push(`Damaged: ${names(d.damaged)}. Repaired: ${repairedCount(d)} for ${fixCost(d)} points. Points used: ${used(d)} of ${budget(d, i)}.`, `Ready ${i < 3 ? 'for the next day' : 'at ENDEX'}: ${readyOf(f)} of 14`, ''); });
   const d4 = S.days[3]; if (d4 && d4.executed) { const w = DAYS[3].taskers.filter((t, k) => d4.results[k].success).length; L.push(`END STATE: ${w >= 4 ? 'Andersen holds.' : 'Andersen is overwhelmed.'} ${w} of 6 Day 4 taskers succeeded. ${readyOf(d4.live)} of 14 jets Ready.`); }
   return L.join('\r\n');
 }
