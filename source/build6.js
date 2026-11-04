@@ -92,13 +92,13 @@ ij.push(say('"You are the leadership of a fighter wing at Andersen Air Force Bas
 ij.push(head('0930  START STATUS (to Maintenance)'));
 ij.push(say('"11 of 14 Ready. One F-35A, one F-15EX, and one F-16 are Down."'));
 ij.push(head('0937  C-17'));
-ij.push(say('"A lost plane from the 62nd Airlift Wing needs refueling and is redirected to your base. It carries 3 food pallets, 5 beds, 20 gallons of water and 10 individual tents. Along with the resources, it has 2 pilots, 1 loadmaster and 5 crew. You must account for this into your resources and take care of the crew indefinitely."'));
+ij.push(say('"A lost aircraft from the 62nd Airlift Wing requires refueling and has been redirected to your base. It is carrying three food pallets, five beds, 20 gallons of water, and 10 individual tents. The aircraft also has two pilots, one loadmaster, and five crew members aboard. You must account for all incoming personnel and resources, incorporate the supplies into your existing inventory, and provide for the crew\u2019s needs indefinitely."'));
 ij.push(crit('they refuel it (1 point) and say how the 8 crew are housed and fed.', 'the crew is never addressed.'));
 ij.push(head('1005  TURNAROUND'));
 ij.push(say('"Your Wing Commander has been assassinated by an insider threat. As a result, your base goes into FPCON Delta. You are forced to go into a bunker."'));
 ij.push(P('Then: lockdown. GMC out, 30 seconds. Clear every note and the Day 1 and 2 papers. Lead #2 gets the FPCON Sheet. GMC back in at 1010.', { size: 20 }));
 ij.push(head('1015  CASUALTIES'));
-ij.push(say('"Six U.S. military personnel are requesting urgent medical assistance after their ship was struck by adversarial troops; all members request a place to stay and immediate physical examination. Two are conscious but report concussion symptoms. One was impaled by a metal pole through their stomach. Two have shallow breathing after being shot in the back. One suffered a wound to the arm with massive arterial bleeding. They request an emergency helicopter to pick them up."'));
+ij.push(say('"Six U.S. military personnel are requesting urgent medical assistance after their ship was struck by adversarial forces. All six require temporary shelter and immediate medical evaluations. Two are conscious but exhibiting symptoms of concussion. One has been impaled through the abdomen by a metal pole. Two have sustained gunshot wounds to the back and are experiencing shallow breathing. One has sustained an arm wound resulting in severe arterial bleeding. The personnel have requested an emergency medical evacuation helicopter for transport to a medical facility."'));
 ij.push(crit('MEDEVAC requested; arterial bleed first, then breathing, then the impalement (pole stays in), then concussions.', 'no MEDEVAC, or the bleed is not first.'));
 ij.push(head('1025  OPENING STRIKE (Day 4)'));
 ij.push(say('"China’s missiles hit the flightline before you can plan. You have lost two jets." Then name the 2 jets the calculator picked.'));
