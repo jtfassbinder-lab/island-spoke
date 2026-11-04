@@ -65,16 +65,16 @@ ev.push(banner('EVALUATOR CARD  -  OPERATION ISLAND SPOKE', 'You grade the GLP l
 ev.push(sp(120));
 ev.push(P([['Your job: ', { bold: true }], 'watch the Wing Commander think, fill the Form 2, and debrief your lead. Do not speak during play. Grade the reasoning, not the dice.']));
 ev.push(headerTable([2300, W - 2300], ['When', 'You do'], [
-  ['0920-1005', 'Evaluate GLP Lead #1: explain, Days 1 and 2, and brief 1 to the Colonel.'],
+  ['0920-1005', 'Evaluate GLP Lead #1: Days 1 and 2, including both briefs to the Colonel (0942 and 0959).'],
   ['1005-1015', 'Lead #1 evaluator: take Lead #1 outside and debrief them on the Form 2. Send them back in by 1015.'],
-  ['1005-1040', 'Lead #2 evaluator: evaluate the turnaround, plan 2, Days 3 and 4, and brief 2.'],
+  ['1005-1040', 'Lead #2 evaluator: evaluate the turnaround, Days 3 and 4, and both briefs (1019 and 1034).'],
   ['1040-1045', 'Take Lead #2 aside and debrief them on the Form 2.'],
 ], { firstFill: C.label, firstBold: true, firstCenter: true }));
 ev.push(H('What to watch each day', { before: 160, size: 24 }));
 ev.push(headerTable([1800, 4600, W - 6400], ['DAY', 'LOOK FOR', 'WARNING SIGN'], [
   [[['Day 1: Show of Force', { bold: true }]], 'Lead #1', 'Covers the taskers without burning both F-22s. Plans repairs for the 3 jets that start Down. Handles the C-17: refuels it and houses and feeds the 8 crew.', 'Flies everything because nothing shoots back. Ignores the C-17 crew.'],
   [[['Day 2: FONOP Escort', { bold: true }]], 'Lead #1', 'Decides which tasker matters most and puts the best jets there (the Navy has no missiles to defend itself). Balances flying today with repairs for tomorrow. Says what the wing must protect going forward.', 'One jet on every tasker with no reason given. No repairs planned.'],
-  [[['Turnaround and plan 2', { bold: true }]], 'Lead #2', 'Takes charge within the first minute. Has Maintenance rebuild the board by asking about one aircraft type at a time.', 'Defers to the room. No one rebuilds the picture.'],
+  [[['Turnaround', { bold: true }]], 'Lead #2', 'Takes charge within the first minute. Has Maintenance rebuild the board by asking about one aircraft type at a time.', 'Defers to the room. No one rebuilds the picture.'],
   [[['Day 3: Strike Ashore', { bold: true }]], 'Lead #2', 'No F-22 on the strike. Briefs bombs on the strike jets and covers the strike with an escort. Casualty inject: requests a MEDEVAC and treats the arterial bleed first.', 'Briefs air-to-air missiles for a strike. Ignores the casualties or gets the triage order wrong.'],
   [[['Day 4: Defend Andersen', { bold: true }]], 'Lead #2', 'Chooses which of the 6 taskers to cover well and which to leave thin, and names the risk. Puts the F-22s on air defense of the base.', 'Spreads one jet across all six. Cannot say what was left uncovered.'],
 ].map(r => [r[0], [[[r[1] + ': ', { bold: true }], r[2]]], r[3]]), { firstFill: C.label, firstBold: true }));

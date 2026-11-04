@@ -123,12 +123,13 @@ th.num { font-family: var(--f-body) }
       <section class="panel">
         <div class="bar"><h2>Phase Timer</h2><span class="meta" id="clock"></span></div>
         <div class="pad">
-          <div class="prow"><span id="tLabel">Ready</span><span class="big" id="tDisplay" style="font-size:2.2rem">10:00</span></div>
+          <div class="prow"><span id="tLabel">Ready</span><span class="big" id="tDisplay" style="font-size:2.2rem">12:00</span></div>
           <div class="decide">
-            <button class="btn" data-tm="600" data-lb="Day">Day 10:00</button>
-            <button class="btn" data-tm="300" data-lb="Plan">Plan 5:00</button>
-            <button class="btn" data-tm="600" data-lb="Brief 1">Brief 10:00</button>
-            <button class="btn" data-tm="300" data-lb="Brief 2">Brief 5:00</button>
+            <button class="btn" data-tm="720" data-lb="Plan">Plan 12:00</button>
+            <button class="btn" data-tm="660" data-lb="Plan">Plan 11:00</button>
+            <button class="btn" data-tm="540" data-lb="Plan">Plan 9:00</button>
+            <button class="btn" data-tm="240" data-lb="Brief">Brief 4:00</button>
+            <button class="btn" data-tm="120" data-lb="Dice">Dice 2:00</button>
           </div>
           <div class="decide"><button class="btn primary" id="tGo">Start</button><button class="btn" id="tReset">Reset</button></div>
           <p class="hint" id="tSched"></p>
@@ -499,8 +500,8 @@ function wireReset() {
   };
 }
 // ---------- timer ----------
-const SCHED = [['Plan 0930-0943', 'C-17 inject 0940', 'Lock and roll 0943-0945'], ['Plan 0945-0953', 'Lock and roll 0953-0955', 'Brief 1 0955-1005'], ['Turnaround 1005', 'Plan 1010-1023', 'Casualties 1020', 'Lock and roll 1023-1025'], ['Opening strike 1025', 'Plan 1025-1033', 'Lock and roll 1033-1035', 'Brief 2 1035-1040']];
-const T = { total: 600, left: 600, label: 'Day', running: false, end: 0 };
+const SCHED = [['Plan 0930-0942 (12:00)', 'C-17 inject 0937', 'Brief 0942-0946', 'Dice 0946-0948'], ['Plan 0948-0959 (11:00)', 'Brief 0959-1003', 'Dice 1003-1005'], ['Turnaround 1005-1010', 'Plan 1010-1019 (9:00)', 'Casualties 1015', 'Brief 1019-1023', 'Dice 1023-1025'], ['Opening strike 1025', 'Plan 1025-1034 (9:00)', 'Brief 1034-1038', 'Dice 1038-1040']];
+const T = { total: 720, left: 720, label: 'Plan', running: false, end: 0 };
 const mmss = n => `${Math.floor(Math.max(0, n) / 60)}:${String(Math.max(0, Math.ceil(n) % 60)).padStart(2, '0')}`;
 function drawTimer() {
   $('tDisplay').textContent = mmss(T.left);

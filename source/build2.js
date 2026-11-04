@@ -356,10 +356,10 @@ gmc.push(P([['[...] marks text left out of the original.', { size: 16, color: C.
 // ===================================================================
 const ord = [];
 const OTIME = [
-  ['Organize and plan 0930-0943', 'Lock the plan with the Proctor, dice, and readout 0943-0945'],
-  ['Plan 0945-0953', 'Lock the plan with the Proctor, dice, and readout 0953-0955', 'Brief the Colonel on Days 1 and 2: 0955-1005'],
-  ['Rebuild the board and plan 1010-1023', 'Lock the plan with the Proctor, dice, and readout 1023-1025'],
-  ['Plan 1025-1033', 'Lock the plan with the Proctor, dice, and readout 1033-1035', 'Brief the Colonel on Days 3 and 4: 1035-1040'],
+  ['Plan 0930-0942', 'Brief the Colonel 0942-0946', 'Dice and readout 0946-0948'],
+  ['Plan 0948-0959', 'Brief the Colonel 0959-1003', 'Dice and readout 1003-1005'],
+  ['Plan 1010-1019', 'Brief the Colonel 1019-1023', 'Dice and readout 1023-1025'],
+  ['Plan 1025-1034', 'Brief the Colonel 1034-1038', 'Dice and readout 1038-1040'],
 ];
 const OUTLOOK = PHASES.map(p => p.forecast);
 PHASES.forEach((ph, i) => {

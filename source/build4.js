@@ -18,11 +18,11 @@ g.push(P('Four sections: 1. how to run the calculator, 2. what happens and when,
 g.push(sec('1. HOW TO RUN THE CALCULATOR'));
 g.push(table([2000, W - 2000], [new TableRow({ children: [
   cell([new Pa({ alignment: CEN, children: [new ImageRun({ type: 'png', data: fs.readFileSync(__dirname + '/calc_qr.png'), transformation: { width: 115, height: 115 } })] })], { w: 2000 }),
-  cell([[['Open it before 0920', { bold: true, color: C.navy }]], 'Scan the code or go to jtfassbinder-lab.github.io/island-spoke on a phone or laptop. No sign-in.', 'Pick your group under Export, then press Reset game at the bottom.', 'Use the Phase Timer at the top right: Explain 10:00, Plan 5:00, Day 10:00, Brief 10:00 or 5:00.'], { w: W - 2000 }),
+  cell([[['Open it before 0920', { bold: true, color: C.navy }]], 'Scan the code or go to jtfassbinder-lab.github.io/island-spoke on a phone or laptop. No sign-in.', 'Pick your group under Export, then press Reset game at the bottom.', 'Use the Phase Timer at the top right. Each day: Plan (12, 11, 9, 9 min), Brief 4:00, Dice 2:00. The time hacks for the day show under the timer.'], { w: W - 2000 }),
 ] })]));
 g.push(sub('Every day, in this order'));
 g.push(N([['Day 4 only: ', { bold: true }], 'press Apply opening strike first. Tell Maintenance which 2 jets went Down.'], { ref: 'nums' }));
-g.push(N([['Lock the plan: ', { bold: true }], 'at the 8-minute mark of each day the Wing CC gives you the plan in 60 seconds. As they talk, add each jet to its tasker (pick the aircraft, press Add jet). A tasker with no jet fails. No pushback here; save it for the brief.'], { ref: 'nums' }));
+g.push(N([['Jets: ', { bold: true }], 'as the Wing CC briefs, add each jet to its tasker (pick the aircraft, press Add jet). A tasker with no jet fails.'], { ref: 'nums' }));
 g.push(N([['Repairs: ', { bold: true }], 'in the Repairs panel, press + under Fix once per jet Maintenance is repairing. Cannibalize needs 2 Down jets of the same type.'], { ref: 'nums' }));
 g.push(N([['Shift posture: ', { bold: true }], 'set it if they chose Extended or Rest. Otherwise leave Normal.'], { ref: 'nums' }));
 g.push(N([['Injects: ', { bold: true }], 'tick Refuel the C-17 if they did (Day 1). Mark each inject Success or Failure (criteria in Section 3).'], { ref: 'nums' }));
@@ -32,26 +32,26 @@ g.push(N([['Close Day. ', { bold: true }], 'Damaged and repaired jets carry into
 g.push(sub('If something goes wrong'));
 g.push(B([['Red message at the bottom: ', { bold: true }], 'the plan breaks a rule (jet not Ready, F-22 on a strike, over 14 points). Tell the Wing CC to fix it.']));
 g.push(B([['After the bunker: ', { bold: true }], 'Maintenance asks you about one aircraft type at a time. Read Ready, Down, and Out from the Fleet panel.']));
-g.push(B([['Leads must explain: ', { bold: true }], 'the GMC Lead talks for the wing at plan lock and at the brief. If a cell lead answers for them, turn back to the GMC Lead.']));
+g.push(B([['Leads must explain: ', { bold: true }], 'the GMC Lead talks for the wing at the brief. If a cell lead answers for them, turn back to the GMC Lead.']));
 g.push(B([['At ENDEX: ', { bold: true }], 'press Copy summary and send it to the Activity Lead.']));
 g.push(B([['Calculator down: ', { bold: true }], 'roll a d6 per jet. F-22 hits on 2+, F-35A on 3+, F-15EX on 4+ (3+ on a strike), F-16 on 5+. One hit = the tasker succeeds.']));
 
 // ================= 2. WHAT HAPPENS AND WHEN =================
 g.push(pageBreak());
 g.push(sec('2. WHAT HAPPENS AND WHEN'));
-g.push(P('Two phases, two days each. Each day is 10 minutes: plan, lock the plan with the Proctor, roll. The Wing CC briefs the Colonel after Day 2 and after Day 4, not every day. The wing gets 14 Wing Points a day to fly and fix jets.'));
+g.push(P('Four days. Each day: plan, brief the Colonel (4 minutes), roll (2 minutes). The Colonel hears the plan before the dice, so pushback can still change it. The wing gets 14 Wing Points a day to fly and fix jets.'));
 g.push(headerTable([1350, 2550, 3200, W - 7100], ['Time', 'What is happening', 'Proctor', 'Support POC'], [
   ['0850-0920', 'Setup and transit', 'Open the calculator. Reset game.', 'Room set, papers stacked in order (Section 3).'],
-  ['0920-0930', 'Explain', 'Read the scenario. Walk through the rules and the GMC Guide. Lead #1 (pre-assigned) takes command.', 'Hand out GMC Guides, Aircraft Cards, role sheets.'],
-  ['0930-0935', 'GMC plan', 'Give Maintenance the start status. Answer no questions.', 'Hand out Day 1 Orders and Day 1 Worksheet.'],
-  ['0935-0945', 'Day 1: Show of Force', '0940: read the C-17 inject. 0943: lock the plan, Execute, read, Close Day.', ''],
-  ['0945-0955', 'Day 2: FONOP Escort', '0953: lock the plan, Execute, read, Close Day.', 'Hand out Day 2 Orders and Day 2 Worksheet.'],
-  ['0955-1005', 'GMC brief 1 (Lead #1)', 'Colonel: 5 min brief, 5 min pushback on Days 1 and 2 (Section 4).', ''],
+  ['0920-0930', 'Explain', 'Read the scenario. Walk through the GMC Guide. Lead #1 (pre-assigned) takes command.', 'Hand out GMC Guides, Aircraft Cards, role sheets.'],
+  ['0930-0942', 'Day 1 plan: Show of Force', 'Give Maintenance the start status. 0937: read the C-17 inject.', 'Hand out Day 1 Orders and Day 1 Worksheet.'],
+  ['0942-0948', 'Day 1 brief, then dice', 'Brief 0942-0946, push back. Dice 0946-0948: Execute, read, Close Day.', ''],
+  ['0948-0959', 'Day 2 plan: FONOP Escort', '', 'Hand out Day 2 Orders and Day 2 Worksheet.'],
+  ['0959-1005', 'Day 2 brief, then dice', 'Brief 0959-1003, push back. Dice 1003-1005.', ''],
   ['1005-1010', 'Turnaround', 'Read the inject. Lead #2 (pre-assigned) takes command. Give the FPCON Sheet.', 'Lockdown (Section 3). Evaluator takes Lead #1 out.'],
-  ['1010-1015', 'GMC plan 2', 'Answer Maintenance by aircraft type only.', 'Hand out Day 3 Orders and Day 3 Worksheet.'],
-  ['1015-1025', 'Day 3: Strike Ashore', '1020: read the casualty inject. 1023: lock, Execute, read, Close Day.', 'Lead #1 rejoins the wing.'],
-  ['1025-1035', 'Day 4: Defend Andersen', '1025: Apply opening strike, tell Maintenance which jets. 1033: lock, Execute, read the end state.', 'Hand out Day 4 Orders and Day 4 Worksheet.'],
-  ['1035-1040', 'GMC brief 2 (Lead #2)', 'Colonel: brief and pushback on Days 3 and 4.', ''],
+  ['1010-1019', 'Day 3 plan: Strike Ashore', 'Answer Maintenance by aircraft type only. 1015: read the casualty inject.', 'Hand out Day 3 Orders and Day 3 Worksheet. Lead #1 rejoins at 1015.'],
+  ['1019-1025', 'Day 3 brief, then dice', 'Brief 1019-1023, push back. Dice 1023-1025.', ''],
+  ['1025-1034', 'Day 4 plan: Defend Andersen', '1025: Apply opening strike, tell Maintenance which jets.', 'Hand out Day 4 Orders and Day 4 Worksheet.'],
+  ['1034-1040', 'Day 4 brief, then dice', 'Brief 1034-1038, push back. Dice 1038-1040, read the end state.', ''],
   ['1040-1045', 'POC debrief', 'Run the flight debrief. Evaluator takes Lead #2.', 'Collect papers. Copy summary to the Activity Lead.'],
   ['1045-1050', 'Transit to Wilson Plaza', '', 'Reset the room.'],
 ], { firstFill: C.label, firstBold: true, firstCenter: true }));
@@ -69,16 +69,16 @@ g.push(sec('3. WHAT TO READ AND HAND OUT'));
 g.push(headerTable([1300, W - 1300], ['Time', 'Support POC hands out'], [
   ['0920', 'GMC Guides, Aircraft Reference Cards, role sheets'],
   ['0930', 'Day 1 Orders, Day 1 Worksheet'],
-  ['0945', 'Day 2 Orders, Day 2 Worksheet'],
+  ['0948', 'Day 2 Orders, Day 2 Worksheet'],
   ['1005', 'FPCON Sheet to Lead #2 (from the Proctor)'],
   ['1010', 'Day 3 Orders, Day 3 Worksheet'],
   ['1025', 'Day 4 Orders, Day 4 Worksheet'],
 ], { firstFill: C.label, firstBold: true, firstCenter: true }));
-g.push(note('Each day starts with that day\u2019s Orders and Worksheet: Day 1 at 0930, Day 2 at 0945, Day 3 at 1010, Day 4 at 1025. Never hand out a day early. Hand out orders, do not read them aloud. Read only what is below.'));
+g.push(note('Each day starts with that day\u2019s Orders and Worksheet: Day 1 at 0930, Day 2 at 0948, Day 3 at 1010, Day 4 at 1025. Never hand out a day early. Hand out orders, do not read them aloud. Read only what is below.'));
 g.push(sub('0920 Scenario (then explain the rules from the GMC Guide)'));
 g.push(say('"You are the leadership of a fighter wing at Andersen Air Force Base, Guam. Recent activity on the Chinese mainland shows China is mobilizing. Your job is to keep Andersen at the highest readiness possible and to be seen doing it, as a visual deterrent. You have 14 fighters and 14 Wing Points each day. Points pay for flying jets and fixing them. You will not have enough to do everything. Each day you get orders with taskers. Brief the Colonel on what you will do and why. Should deterrence fail, the wing will defend Guam with whatever it has kept ready."'));
 g.push(P([['Then: ', { bold: true }], 'GLP Lead #1 is pre-assigned; confirm they are in the room. At 0930 tell Maintenance: "11 of 14 Ready. One F-35A, one F-15EX, and one F-16 are Down." ', ['No questions after this.', { bold: true }]]));
-g.push(sub('0940 C-17 inject'));
+g.push(sub('0937 C-17 inject'));
 g.push(say('"A lost plane from the 62nd Airlift Wing needs refueling and is redirected to your base. It carries 3 food pallets, 5 beds, 20 gallons of water and 10 individual tents. Along with the resources, it has 2 pilots, 1 loadmaster and 5 crew. You must account for this into your resources and take care of the crew indefinitely."'));
 g.push(P([['Success: ', { bold: true, color: C.green }], 'they refuel it (1 point) and say how the 8 crew are housed and fed. ', ['Failure: ', { bold: true, color: C.red }], 'the crew is never addressed.']));
 g.push(sub('1005 Turnaround'));
@@ -87,26 +87,24 @@ g.push(N('Evaluator takes Lead #1 outside for their debrief.', { ref: 'nums2' })
 g.push(N([['Support POC: ', { bold: true }], 'all GMC out of the room. Anyone inside after 30 seconds is eliminated. Remove every note and the Day 1 and 2 Orders and Worksheets.'], { ref: 'nums2' }));
 g.push(N('GLP Lead #2 (pre-assigned) takes command. Hand them only the FPCON Sheet: "14 jets assigned. Status unknown. 14 Wing Points per day."', { ref: 'nums2' }));
 g.push(N('GMC back in at 1010 for plan 2. Lead #1 rejoins at 1015, after the debrief.', { ref: 'nums2' }));
-g.push(sub('1020 Casualty inject'));
+g.push(sub('1015 Casualty inject'));
 g.push(say('"Six U.S. military personnel are requesting urgent medical assistance after their ship was struck by adversarial troops; all members request a place to stay and immediate physical examination. Two are conscious but report concussion symptoms. One was impaled by a metal pole through their stomach. Two have shallow breathing after being shot in the back. One suffered a wound to the arm with massive arterial bleeding. They request an emergency helicopter to pick them up."'));
 g.push(P([['Success: ', { bold: true, color: C.green }], 'they request a MEDEVAC and treat the arterial bleed first, then breathing, then the impalement (pole stays in), then concussions. ', ['Failure: ', { bold: true, color: C.red }], 'no MEDEVAC, or the bleed is not first.']));
 g.push(sub('1025 Opening strike (Day 4)'));
 g.push(say('"China\'s missiles hit the flightline before you can plan. You have lost two jets." Then name the 2 jets the calculator picked.'));
-g.push(sub('1035 End state (after the Day 4 readout)'));
+g.push(sub('1040 End state (after the Day 4 readout)'));
 g.push(say('4 or more of 6 taskers succeeded: "Andersen holds."   3 or fewer: "Andersen is overwhelmed."   Then: "You have ___ of 14 jets Ready."'));
 
 // ================= 4. COLONEL =================
 g.push(pageBreak());
 g.push(sec('4. PUSH BACK AS THE COLONEL'));
-g.push(shadedBox([P([['Be critical. Act fast. ', { bold: true, color: C.red, size: 24 }], ['You are a busy Colonel. Brief 1 at 0955: 5 minutes of brief, then 5 of questions. Brief 2 at 1035: 5 minutes total. Stand up. Start the clock when they start talking and cut them off on time. Interrupt anything vague: "Which jet? How many? Why that one?" Do not help them, do not explain the rules, do not accept "we think." If they cannot answer, say "Noted," and move on. Never tell them if a plan is good before the dice.', { color: C.navy }]], { after: 0 })], C.cream));
+g.push(shadedBox([P([['Be critical. Act fast. ', { bold: true, color: C.red, size: 24 }], ['You are a busy Colonel with 4 minutes per brief, questions included. Stand up. Start the clock when they start talking and cut them off on time. Interrupt anything vague: "Which jet? How many? Why that one?" Do not help them, do not explain the rules, do not accept "we think." If they cannot answer, say "Noted," and move on. Never tell them if a plan is good before the dice.', { color: C.navy }]], { after: 0 })], C.cream));
 g.push(sub('What the brief must cover (cut them off if it does not)'));
-g.push(B('What happened each day: which taskers succeeded and failed, and why.'));
-g.push(B('How many jets are Ready, Down, and Out now (Maintenance speaks first).'));
-g.push(B('Which jets went on which tasker, and what weapons they carried.'));
-g.push(B('What they left uncovered on purpose.'));
-g.push(B('How the 14 points split between flying and repairs.'));
-g.push(B('What they would do the same or differently, and what the wing has left.'));
-g.push(sub('Pushback (ask at least two per day covered)'));
+g.push(B('Ranking: the order of the taskers, and why #1 is #1.'));
+g.push(B('Availability: how many jets are Ready, Down, and Out, by type.'));
+g.push(B('Jets: which jets on which tasker, what they carry, and what is left uncovered on purpose.'));
+g.push(B('Allocation of Points: how the 14 points split between flying and repairs, and why.'));
+g.push(sub('Pushback by day (ask at least two)'));
 g.push(headerTable([2100, W - 2100], ['Day', 'Ask'], [
   ['1. Show of Force', ['"Why are both F-22s flying a show of force? What does that cost you tomorrow?"', '"Three jets are Down. Why are you not fixing them?"', '"Where are the 8 C-17 crew sleeping tonight?"']],
   ['2. FONOP Escort', ['"The Navy has no missiles. Why is that not your top tasker?"', '"Which tasker did you give up, and what happens if it fails?"', '"What are you protecting for the rest of this week?"']],
