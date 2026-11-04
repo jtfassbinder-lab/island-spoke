@@ -304,26 +304,26 @@ gmc.push(P([['SCENARIO - OPERATION ISLAND SPOKE', { bold: true, size: 32, color:
 const sh = (parts, o = {}) => P(parts, { shade: C.boxBlue, after: 0, size: 20, ...o });
 const sb = (parts) => B(parts, { shade: C.boxBlue, after: 0, size: 20 });
 gmc.push(P([['Scenario:', { bold: true }]], { after: 40, before: 120 }));
-gmc.push(sh('You are the leadership of a fighter wing at Andersen Air Force Base, Guam. China is mobilizing its forces across the region, and your wing is expected to keep Andersen at its highest state of readiness while making that readiness visible. Should deterrence fail, the wing will defend Guam with whatever it has kept ready.'));
+gmc.push(sh('Your wing is stationed at Andersen Air Force Base, Guam. China has begun mobilizing in the region. Higher headquarters wants Andersen at its highest readiness and wants China to see it. If deterrence fails, you will defend Guam with the jets you have left.'));
 gmc.push(P([['Mission:', { bold: true }]], { after: 40, before: 160 }));
 gmc.push(sb([['Higher headquarters intent: ', { bold: true }], 'deter China. If deterrence fails, defend Guam.']));
-gmc.push(sb('Each day the wing receives Day Orders outlining the situation and its taskers. The Wing Commander sets their priority.'));
-gmc.push(sb('The wing does not have the jets or the points to cover every tasker well. Decide where to accept risk.'));
-gmc.push(sb('Every sortie carries a cost. A jet that flies today may not be available tomorrow.'));
-gmc.push(sb('The Wing Commander briefs the Colonel on the wing’s decisions and the reasoning behind them.'));
+gmc.push(sb('You will receive Day Orders each day with the situation and your taskers.'));
+gmc.push(sb('The Wing Commander decides which taskers come first.'));
+gmc.push(sb('You will not have enough jets or points to do everything.'));
+gmc.push(sb('The Wing Commander briefs the Colonel on what the wing did and why.'));
 gmc.push(P([['Your Cells:', { bold: true }]], { after: 40, before: 160 }));
 gmc.push(headerTable([2400, W - 2400], ['Cell', 'Responsibilities'], [
-  ['Wing Commander', 'Sets the priority of the taskers and decides how the 14 Wing Points are split between Ops and Maintenance. Briefs the Colonel.'],
-  ['Ops', 'Assigns Ready jets to each tasker and decides how many go on each.'],
-  ['Maintenance', 'Tracks which jets are Ready, Down, and Out, and commits points to repair damaged jets.'],
+  ['Wing Commander', 'Ranks the taskers. Decides how the 14 Wing Points are split between Ops and Maintenance. Briefs the Colonel.'],
+  ['Ops', 'Puts Ready jets on taskers and decides how many go on each.'],
+  ['Maintenance', 'Tracks Ready, Down, and Out jets. Spends points on repairs.'],
 ], { firstFill: C.label, firstBold: true }));
 gmc.push(P([['Rules:', { bold: true }]], { after: 40, before: 160 }));
 [
-  'Each jet assigned to a tasker has its own chance of success, listed on its Aircraft Reference Card. A tasker succeeds if at least one jet on it succeeds.',
-  'The wing receives 14 Wing Points per day. Flying and repairing jets both draw from that total. Points do not carry over.',
-  'Any jet that flies may return damaged. It remains Down until Maintenance pays to repair it.',
-  'Repairs are decided alongside the rest of the plan, before results are rolled. A repaired jet is Ready the following day.',
-  'For anything not covered here, state the action, the intended result, and up to three reasons. The Proctor will rule.',
+  'Each jet has a success rate on its Aircraft Reference Card. A tasker succeeds if one jet on it succeeds.',
+  'You get 14 Wing Points a day for flying and repairs. Unused points are lost.',
+  'Jets that fly can come back damaged. A damaged jet is Down until Maintenance repairs it.',
+  'Repairs are planned before the roll. A repaired jet is Ready the next day.',
+  'If something is not covered, tell the Proctor what you want to do, what you want to happen, and up to three reasons why. The Proctor makes the call.',
 ].forEach(r => gmc.push(sb(r)));
 gmc.push(P([['What to Brief:', { bold: true }]], { after: 40, before: 160 }));
 gmc.push(N([['Ranking: ', { bold: true }], 'the order of the day’s taskers, and why the first one comes first.'], { ref: 'nums4' }));
