@@ -123,13 +123,10 @@ th.num { font-family: var(--f-body) }
       <section class="panel">
         <div class="bar"><h2>Phase Timer</h2><span class="meta" id="clock"></span></div>
         <div class="pad">
-          <div class="prow"><span id="tLabel">Ready</span><span class="big" id="tDisplay" style="font-size:2.2rem">12:00</span></div>
+          <div class="prow"><span id="tLabel">Ready</span><span class="big" id="tDisplay" style="font-size:2.2rem">15:00</span></div>
           <div class="decide">
-            <button class="btn" data-tm="720" data-lb="Plan">Plan 12:00</button>
-            <button class="btn" data-tm="660" data-lb="Plan">Plan 11:00</button>
-            <button class="btn" data-tm="540" data-lb="Plan">Plan 9:00</button>
-            <button class="btn" data-tm="240" data-lb="Brief">Brief 4:00</button>
-            <button class="btn" data-tm="120" data-lb="Dice">Dice 2:00</button>
+            <button class="btn" data-tm="900" data-lb="Execute">Execute 15:00</button>
+            <button class="btn" data-tm="300" data-lb="Brief">Brief 5:00</button>
           </div>
           <div class="decide"><button class="btn primary" id="tGo">Start</button><button class="btn" id="tReset">Reset</button></div>
           <p class="hint" id="tSched"></p>
@@ -208,20 +205,19 @@ const DAYS = [
       { name: 'Fly a show of force over the Marianas', ok: "China's exercise winds down early.", bad: 'China keeps massing. The pressure on Guam grows.' },
       { name: 'Fly a deterrence CAP', ok: 'The CAP holds. No Chinese aircraft approach.', bad: 'Chinese fighters probe the air defense zone unchallenged.' },
       { name: 'Escort the bomber task force', ok: 'The bombers complete the flyover.', bad: 'The bombers turn back early without escort.' },
-      { name: '0930 inject: lost C-17 and 8 crew', decision: true, refuel: true, ok: 'The C-17 is refueled and all 8 crew are housed and fed.', bad: 'The crew is left unaccounted for, or the C-17 is ignored.' },
     ] },
   { n: 2, name: 'FONOP Escort', budget: 14, lead: 'GLP Lead #1',
     taskers: [
       { name: 'Provide air cover for the Navy FONOP', ok: "The FONOP completes its transit. China's ships break off.", bad: 'Chinese fighters harass the Navy ships through the transit.' },
       { name: 'Fly DCA over Guam', ok: "Guam's airspace stays clear.", bad: 'A Chinese drone overflies Andersen.' },
       { name: 'Escort the P-8 patrol', ok: 'The P-8 locates the Chinese carrier.', bad: 'The P-8 is chased off before finding the carrier.' },
+      { name: '0940 inject: lost C-17 and 8 crew', decision: true, refuel: true, ok: 'The C-17 is refueled and all 8 crew are housed and fed.', bad: 'The crew is left unaccounted for, or the C-17 is ignored.' },
     ] },
   { n: 3, name: 'Strike Ashore', budget: 14, lead: 'GLP Lead #2',
     taskers: [
       { name: 'Strike Chinese forces ashore', strike: true, ok: "China's forces ashore are hit hard.", bad: "The strike misses. China's forces hold their ground." },
       { name: 'Escort the strike package', ok: 'The strike package is covered in and out.', bad: 'The strike package fights its way in alone.' },
       { name: 'Fly DCA over Guam', ok: "Guam's airspace stays clear.", bad: "Chinese aircraft reach the edge of Guam's airspace." },
-      { name: '1015 inject: 6 casualties', decision: true, ok: 'MEDEVAC is requested and the triage order puts the arterial bleed first.', bad: 'No MEDEVAC request, or the arterial bleed is not treated first.' },
     ] },
   { n: 4, name: 'Defend Andersen', budget: 14, lead: 'GLP Lead #2', opening: true,
     taskers: [
@@ -231,9 +227,10 @@ const DAYS = [
       { name: 'Cover Apra Harbor and the Navy ships in port', ok: 'The harbor is covered.', bad: 'Navy ships in port take hits.' },
       { name: 'Fly a CAP over Saipan and Tinian', ok: 'The northern islands stay covered.', bad: 'Chinese aircraft roam the northern Marianas.' },
       { name: "Strike China's missile launchers", strike: true, ok: 'The launchers are destroyed.', bad: 'The launchers survive to fire again.' },
+            { name: '1020 inject: 6 casualties', decision: true, ok: 'MEDEVAC is requested and the triage order puts the arterial bleed first.', bad: 'No MEDEVAC request, or the arterial bleed is not treated first.' },
     ] },
 ];
-const KEY = 'island-spoke-proctor-v5';
+const KEY = 'island-spoke-proctor-v6';
 const START = { F22: { r: 2, d: 0, o: 0 }, F35: { r: 2, d: 1, o: 0 }, F15: { r: 3, d: 1, o: 0 }, F16: { r: 4, d: 1, o: 0 } };
 const clone = o => JSON.parse(JSON.stringify(o));
 const zero = () => ({ F22: 0, F35: 0, F15: 0, F16: 0 });
@@ -500,8 +497,8 @@ function wireReset() {
   };
 }
 // ---------- timer ----------
-const SCHED = [['Plan 0930-0942 (12:00)', 'C-17 inject 0937', 'Brief 0942-0946', 'Dice 0946-0948'], ['Plan 0948-0959 (11:00)', 'Brief 0959-1003', 'Dice 1003-1005'], ['Turnaround 1005-1010', 'Plan 1010-1019 (9:00)', 'Casualties 1015', 'Brief 1019-1023', 'Dice 1023-1025'], ['Opening strike 1025', 'Plan 1025-1034 (9:00)', 'Brief 1034-1038', 'Dice 1038-1040']];
-const T = { total: 720, left: 720, label: 'Plan', running: false, end: 0 };
+const SCHED = [['Explain 0920-0925', 'Execute to 0935', 'Brief 0935-0940'], ['C-17 inject 0940', 'Execute 0940-0955', 'Brief 0955-1000'], ['Turnaround 1000-1005', 'Execute 1005-1015', 'Brief 1015-1020'], ['Opening strike and casualties 1020', 'Execute 1020-1035', 'Brief 1035-1040']];
+const T = { total: 900, left: 900, label: 'Execute', running: false, end: 0 };
 const mmss = n => `${Math.floor(Math.max(0, n) / 60)}:${String(Math.max(0, Math.ceil(n) % 60)).padStart(2, '0')}`;
 function drawTimer() {
   $('tDisplay').textContent = mmss(T.left);
