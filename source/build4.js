@@ -26,8 +26,17 @@ g.push(N([['Jets: ', { bold: true }], 'as the Wing CC briefs, add each jet to it
 g.push(N([['Repairs: ', { bold: true }], 'in the Repairs panel, press + under Fix once per jet Maintenance is repairing. Cannibalize needs 2 Down jets of the same type.'], { ref: 'nums' }));
 g.push(N([['Injects: ', { bold: true }], 'tick Refuel the C-17 if they did (Day 2). Mark each inject Success or Failure (criteria in Section 3).'], { ref: 'nums' }));
 g.push(N([['Execute: ', { bold: true }], 'press Execute Day. The calculator rolls every jet.'], { ref: 'nums' }));
-g.push(N([['Read the readout aloud, ', { bold: true }], 'top to bottom: each success or failure line, jets lost, jets repaired, what is still Down, jets Ready.'], { ref: 'nums' }));
-g.push(N([['Close Day. ', { bold: true }], 'Damaged and repaired jets carry into the next day automatically.'], { ref: 'nums' }));
+g.push(N([['Read the readout aloud and set up tomorrow, ', { bold: true }], 'then Close Day (box below).'], { ref: 'nums' }));
+g.push(shadedBox([
+  P([['AFTER EVERY ROLL: SET THE WING UP FOR TOMORROW', { bold: true, color: C.red, size: 24 }]], { after: 80 }),
+  P([['The readout is how the wing learns what it has left. Do not skip it and do not summarize it. Read it so Maintenance can write it down.', { color: C.navy }]], { after: 80 }),
+  N([['Results: ', { bold: true }], 'read each tasker\u2019s success or failure line and its consequence.'], { ref: 'nums3' }),
+  N([['Losses: ', { bold: true }], 'name every jet that came back damaged, by type ("One F-35A and one F-16 are now Down").'], { ref: 'nums3' }),
+  N([['Repairs: ', { bold: true }], 'name every jet Maintenance fixed. They are Ready tomorrow.'], { ref: 'nums3' }),
+  N([['Tomorrow\u2019s board: ', { bold: true }], 'read the Fleet panel line by line: Ready, Down, and Out for each type. Wait while Maintenance copies it onto the next Worksheet.'], { ref: 'nums3' }),
+  N([['Close Day, ', { bold: true }], 'then the Support POC hands out the next Day Orders and Worksheet.'], { ref: 'nums3' }),
+  P([['After Day 2, read the board as usual. The bunker wipes it. On Day 3, Maintenance has to ask you one aircraft type at a time.', { bold: true, size: 20 }]], { before: 80, after: 0 }),
+], C.cream));
 g.push(sub('If something goes wrong'));
 g.push(B([['Red message at the bottom: ', { bold: true }], 'the plan breaks a rule (jet not Ready, F-22 on a strike, over 14 points). Tell the Wing CC to fix it.']));
 g.push(B([['After the bunker: ', { bold: true }], 'Maintenance asks you about one aircraft type at a time. Read Ready, Down, and Out from the Fleet panel.']));
@@ -36,7 +45,7 @@ g.push(B([['At ENDEX: ', { bold: true }], 'press Copy summary and send it to the
 g.push(B([['Calculator down: ', { bold: true }], 'roll a d6 per jet. F-22 hits on 2+, F-35A on 3+, F-15EX on 4+ (3+ on a strike), F-16 on 5+. One hit = the tasker succeeds.']));
 
 // ================= 2. WHAT HAPPENS AND WHEN =================
-g.push(pageBreak());
+g.push(sp(160));
 g.push(sec('2. WHAT HAPPENS AND WHEN'));
 g.push(P('Four days. Each day: execute (plan) for 15 minutes, then brief the Colonel for 5. Roll the dice at the end of each brief. The wing gets 14 Wing Points a day to fly and fix jets.'));
 g.push(headerTable([1350, 2550, 3200, W - 7100], ['Time', 'What is happening', 'Proctor', 'Support POC'], [
