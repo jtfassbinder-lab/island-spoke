@@ -304,79 +304,51 @@ gmc.push(P([['SCENARIO - OPERATION ISLAND SPOKE', { bold: true, size: 32, color:
 const sh = (parts, o = {}) => P(parts, { shade: C.boxBlue, after: 0, size: 20, ...o });
 const sb = (parts) => B(parts, { shade: C.boxBlue, after: 0, size: 20 });
 gmc.push(P([['Scenario:', { bold: true }]], { after: 40, before: 120 }));
-gmc.push(sh('You are the leadership of a fighter wing at Andersen AFB, Guam. China is mobilizing. Keep Andersen at the highest readiness possible and be seen doing it. If the conflict turns into a fight, you fight with what you kept ready.'));
+gmc.push(sh('You are the leadership of a fighter wing at Andersen Air Force Base, Guam. China is mobilizing its forces across the region, and your wing is expected to keep Andersen at its highest state of readiness while making that readiness visible. Should deterrence fail, the wing will defend Guam with whatever it has kept ready.'));
 gmc.push(P([['Mission:', { bold: true }]], { after: 40, before: 160 }));
-gmc.push(sb([['Intent from higher headquarters: ', { bold: true }], 'Deter China. If deterrence fails, defend Guam.']));
-gmc.push(sb('Each day you get printed Day Orders with the situation and taskers. The Wing Commander ranks the taskers.'));
-gmc.push(sb('Assign jets to each tasker. You do not have enough to do everything well.'));
-gmc.push(sb('Keep enough jets ready for later. A jet that flies today may be broken tomorrow.'));
-gmc.push(sb([['Brief the Colonel twice, ', { bold: true }], 'after Day 2 and after Day 4, on what you did and ', ['why', { bold: true }], '.']));
+gmc.push(sb([['Higher headquarters intent: ', { bold: true }], 'deter China. If deterrence fails, defend Guam.']));
+gmc.push(sb('Each day the wing receives Day Orders outlining the situation and its taskers. The Wing Commander sets their priority.'));
+gmc.push(sb('The wing does not have the jets or the points to cover every tasker well. Decide where to accept risk.'));
+gmc.push(sb('Every sortie carries a cost. A jet that flies today may not be available tomorrow.'));
+gmc.push(sb('The Wing Commander briefs the Colonel on the wing’s decisions and the reasoning behind them.'));
 gmc.push(P([['Your Cells:', { bold: true }]], { after: 40, before: 160 }));
-gmc.push(headerTable([2400, W - 2400], ['Cell', 'Your job each day'], [
-  ['Wing Commander', 'Rank the taskers. Split the 14 points between Ops and Maintenance. Lock the plan with the Proctor. Brief the Colonel.'],
-  ['Ops', 'Assign Ready jets to taskers. Decide how many jets go on each.'],
-  ['Maintenance', 'Report how many jets are Ready, Down, and Out. Commit points to fix broken jets before the roll.'],
+gmc.push(headerTable([2400, W - 2400], ['Cell', 'Responsibilities'], [
+  ['Wing Commander', 'Sets the priority of the taskers and decides how the 14 Wing Points are split between Ops and Maintenance. Briefs the Colonel.'],
+  ['Ops', 'Assigns Ready jets to each tasker and decides how many go on each.'],
+  ['Maintenance', 'Tracks which jets are Ready, Down, and Out, and commits points to repair damaged jets.'],
 ], { firstFill: C.label, firstBold: true }));
 gmc.push(P([['Rules:', { bold: true }]], { after: 40, before: 160 }));
 [
-  [['Success: ', { bold: true }], 'each jet on a tasker rolls its success rate from its card. If at least one jet succeeds, the tasker succeeds.'],
-  [['Points: ', { bold: true }], 'you get 14 per day. Flying and fixing jets both cost points. Unused points are lost.'],
-  'Every jet that flies may come back broken. It stays down until Maintenance pays to fix it.',
-  'An F-22 carries air-to-air weapons only, so it cannot fly a strike. When you brief, say what weapons each jet carries (see the Aircraft Reference Cards).',
-  'Repairs are planned with the rest of the plan, before the dice. A repaired jet is Ready the next day.',
-  'Maintenance reports first. Ops cannot plan until it does.',
-  [['Lock the plan: ', { bold: true }], 'at the 8-minute mark each day, the Wing Commander tells the Proctor which jets go on each tasker and which jets get fixed. 60 seconds. Then the dice.'],
-  'Anything not covered: state the action, the result you want, and up to 3 reasons. The Proctor rules.',
+  'Each jet assigned to a tasker has its own chance of success, listed on its Aircraft Reference Card. A tasker succeeds if at least one jet on it succeeds.',
+  'The wing receives 14 Wing Points per day. Flying and repairing jets both draw from that total. Points do not carry over.',
+  'Any jet that flies may return damaged. It remains Down until Maintenance pays to repair it.',
+  'Repairs are decided alongside the rest of the plan, before results are rolled. A repaired jet is Ready the following day.',
+  'For anything not covered here, state the action, the intended result, and up to three reasons. The Proctor will rule.',
 ].forEach(r => gmc.push(sb(r)));
-gmc.push(P([['Timeline:', { bold: true }]], { after: 40, before: 160 }));
-gmc.push(headerTable([1500, W - 1500], ['Time', 'What happens'], [
-  ['0920-0930', 'Scenario and rules. GMC Lead #1 takes command.'],
-  ['0930-0935', 'GMC plan: Day 1 Orders out. Assign your cells. Maintenance reports.'],
-  ['0935-0945', 'Day 1. Plan, lock the plan, dice.'],
-  ['0945-0955', 'Day 2. Plan, lock the plan, dice.'],
-  ['0955-1005', 'GMC brief 1 to the Colonel: Days 1 and 2.'],
-  ['1005-1015', 'Unknown.'],
-  ['1015-1035', 'Days 3 and 4.'],
-  ['1035-1040', 'GMC brief 2 to the Colonel: Days 3 and 4.'],
-  ['1040-1045', 'Debrief.'],
-], { firstFill: C.label, firstBold: true, firstCenter: true }));
-gmc.push(P([['What to Brief (both briefs):', { bold: true }]], { after: 40, before: 160 }));
-gmc.push(N([['Results: ', { bold: true }], 'which taskers succeeded and failed each day, and why.'], { ref: 'nums4' }));
-gmc.push(N([['Availability: ', { bold: true }], 'how many jets are Ready, Down, and Out now, by type.'], { ref: 'nums4' }));
-gmc.push(N([['Ranking: ', { bold: true }], 'your taskers in order each day, and why #1 was #1.'], { ref: 'nums4' }));
-gmc.push(N([['Jets: ', { bold: true }], 'which jets went on which tasker, and what you left uncovered.'], { ref: 'nums4' }));
-gmc.push(N([['Points: ', { bold: true }], 'how you split flying and fixing, and why.'], { ref: 'nums4' }));
-gmc.push(N([['Next: ', { bold: true }], 'what you would change, and what the wing has left to fight with.'], { ref: 'nums4' }));
+gmc.push(P([['What to Brief:', { bold: true }]], { after: 40, before: 160 }));
+gmc.push(N([['Ranking: ', { bold: true }], 'the order of the day’s taskers, and why the first one comes first.'], { ref: 'nums4' }));
+gmc.push(N([['Availability: ', { bold: true }], 'how many jets are Ready, Down, and Out, by type.'], { ref: 'nums4' }));
+gmc.push(N([['Jets: ', { bold: true }], 'which jets went on each tasker, and what you used from them.'], { ref: 'nums4' }));
+gmc.push(N([['Allocation of Points: ', { bold: true }], 'how the 14 points were split between flying and repairs, and why.'], { ref: 'nums4' }));
 
-// ---- Doctrine excerpts ----
-const dq = (src, text) => [P([[src, { bold: true, color: C.navy, size: 20 }]], { before: 140, after: 40 }), P([[text, { italics: true, size: 20 }]], { shade: C.boxBlue, after: 40 })];
-const dw = (t) => P([[t, { size: 18, color: C.grey }]], { after: 60 });
-gmc.push(sp(240));
+// ---- Doctrine excerpts (one page) ----
+const dq = (src, text, keep) => [
+  P([[src, { bold: true, color: C.navy, size: 20 }]], { before: 120, after: 20 }),
+  P([[text, { italics: true, size: 20 }]], { after: 20 }),
+  P([['Things to keep in mind: ', { bold: true, size: 17, color: C.grey }], [keep, { size: 17, color: C.grey }]], { after: 40 }),
+];
+gmc.push(pageBreak());
 gmc.push(P([['DOCTRINE EXCERPTS', { bold: true, size: 32, color: C.navy }]], { align: CEN, after: 80, bottomRule: true }));
-gmc.push(P([['Read these before you plan. The Colonel will expect you to use them.', { size: 20 }]], { align: CEN, after: 120 }));
-gmc.push(...dq('Wargaming (JP 5-0, Joint Planning, 2017)', '"COA wargaming is a conscious attempt to visualize the flow of the operation, [...] and other aspects of the OE."'));
-gmc.push(dw('That is this game. Each day, picture what your plan does to tomorrow before you lock it.'));
-gmc.push(...dq('Courses of action (JP 5-0, Joint Planning, 2017)', 'Joint planning "facilitates development of feasible, acceptable, adequate, distinguishable, and complete courses of action."'));
-gmc.push(dw('Test your plan: can the jets you have actually do it, is the risk worth it, and does it cover what matters?'));
-gmc.push(...dq('Planning (AFDP 5-0, Planning)', '"Planning is how Airmen address and solve complex problems."'));
-gmc.push(dw('You have minutes, not hours. Frame the problem first, then assign jets.'));
-gmc.push(...dq('Deterrence (AFDP 3-0, Operations, 2025)', '"Deterrence is the practice of discouraging an actor from taking unwanted action. Deterrence is an effect on the state of mind of an adversary brought about by the existence of a credible threat of unacceptable retaliation."'));
-gmc.push(dw('Days 1 and 2. Being seen is the mission. A wing that looks weak, or burns out its jets, is not a credible threat.'));
-gmc.push(...dq('Commander\u2019s intent (JP 3-0, Joint Operations)', '"Commander\u2019s intent is the commander\u2019s clear and concise expression of what the force must do and the conditions the force must establish to accomplish the mission. It includes the purpose, end state, and associated risks."'));
-gmc.push(dw('Wing Commander: say it in three sentences. Every cadet in the room should be able to repeat it.'));
-gmc.push(...dq('Mission command (AFDP 1-1, Mission Command, 2023)', '"Mission command is a philosophy of leadership that empowers Airmen to operate in uncertain, complex, and rapidly changing environments through trust, shared awareness, and understanding of commander\u2019s intent."'));
-gmc.push(dw('Ops and Maintenance work their own problems. The commander decides the split and owns it.'));
-gmc.push(...dq('Disciplined initiative (AFDP 1-1, Mission Command, 2023)', '"Disciplined initiative is the proactive application of inventiveness and creativity [...] when existing orders no longer fit the situation or when unforeseen threats or opportunities arise."'));
-gmc.push(dw('If you lose your commander or your records, act on the intent you were given. Do not wait to be told.'));
-gmc.push(...dq('Mission command (JP 3-0, Joint Operations)', '"Commanders delegate decisions to subordinates wherever possible, which minimizes detailed control and empowers subordinates\u2019 initiative to make decisions based on the commander\u2019s guidance rather than constant communications."'));
-gmc.push(dw('Give each cell a task and a time to report. Then let them work.'));
-gmc.push(...dq('Economy of force (JP 3-0, Joint Operations)', '"The purpose of economy of force is to expend minimum essential combat power on secondary efforts to allocate the maximum possible combat power on primary efforts."'));
-gmc.push(dw('You cannot cover every tasker well. Pick the main effort and put your best jets there.'));
-gmc.push(...dq('Risk (JP 3-0, Joint Operations)', '"The commander determines the level of risk that is acceptable, with respect to aspects of operations, and should state this determination in commander\u2019s intent." [...] "Risk is inherent in military operations. Application of this principle includes prudent risk management, not undue caution."'));
-gmc.push(dw('Say out loud which tasker you are leaving thin and what it costs if it fails.'));
-gmc.push(...dq('Agile combat employment (AFDP 3-99, DAF Role in JADO, 2021)', '"ACE is the Air Force\u2019s concept to provide a proactive and reactive operational scheme of maneuver [...] executed within operationally relevant threat timelines to increase survivability while generating combat power."'));
-gmc.push(dw('If the base is attacked, the wing still has to put jets in the air. What you saved is what you can generate.'));
-gmc.push(P([['Sources: AFDP 1-1, Mission Command (14 August 2023); AFDP 3-0, Operations (22 January 2025); AFDP 5-0, Planning (LeMay Center summary); AFDP 3-99, DAF Role in Joint All-Domain Operations (19 November 2021); JP 3-0, Joint Operations (17 January 2017, Change 1, 22 October 2018); JP 5-0, Joint Planning (16 June 2017). [...] marks text left out.', { size: 16, color: C.grey }]], { before: 160 }));
+gmc.push(...dq('Wargaming (JP 5-0, Joint Planning)', '"COA wargaming is a conscious attempt to visualize the flow of the operation, [...] and other aspects of the OE."', 'Before you commit, picture what today’s plan does to tomorrow’s wing.'));
+gmc.push(...dq('Planning (AFDP 5-0, Planning)', '"Planning is how Airmen address and solve complex problems."', 'Frame the problem before you assign a single jet.'));
+gmc.push(...dq('Deterrence (AFDP 3-0, Operations)', '"Deterrence is an effect on the state of mind of an adversary brought about by the existence of a credible threat of unacceptable retaliation."', 'Presence is the mission early on. A wing that burns itself out is not a credible threat.'));
+gmc.push(...dq('Commander’s Intent (JP 3-0, Joint Operations)', '"Commander’s intent is the commander’s clear and concise expression of what the force must do and the conditions the force must establish to accomplish the mission. It includes the purpose, end state, and associated risks."', 'Three sentences. Every cadet in the room should be able to repeat it.'));
+gmc.push(...dq('Mission Command (AFDP 1-1, Mission Command)', '"Mission command is a philosophy of leadership that empowers Airmen to operate in uncertain, complex, and rapidly changing environments through trust, shared awareness, and understanding of commander’s intent."', 'Give Ops and Maintenance a task and a time to report back, then let them work.'));
+gmc.push(...dq('Disciplined Initiative (AFDP 1-1, Mission Command)', '"Disciplined initiative is the proactive application of inventiveness and creativity [...] when existing orders no longer fit the situation or when unforeseen threats or opportunities arise."', 'If the situation changes, act on the intent you were given.'));
+gmc.push(...dq('Economy of Force (JP 3-0, Joint Operations)', '"The purpose of economy of force is to expend minimum essential combat power on secondary efforts to allocate the maximum possible combat power on primary efforts."', 'Pick the main effort and put your best jets there.'));
+gmc.push(...dq('Risk (JP 3-0, Joint Operations)', '"Risk is inherent in military operations. Application of this principle includes prudent risk management, not undue caution."', 'Know which tasker you are leaving thin and what it costs if it fails.'));
+gmc.push(...dq('Agile Combat Employment (AFDP 3-99, DAF Role in JADO)', '"ACE is the Air Force’s concept to provide a proactive and reactive operational scheme of maneuver [...] executed within operationally relevant threat timelines to increase survivability while generating combat power."', 'What the wing saves is what it can put in the air when it matters most.'));
+gmc.push(P([['[...] marks text left out of the original.', { size: 16, color: C.grey }]], { before: 100 }));
 
 
 // ===================================================================

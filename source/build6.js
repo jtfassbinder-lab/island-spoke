@@ -88,7 +88,7 @@ const head = (t) => P([[t, { bold: true, color: C.white, size: 24 }]], { shade: 
 const crit = (ok, bad) => P([['Success: ', { bold: true, color: C.green }], ok, '   ', ['Failure: ', { bold: true, color: C.red }], bad], { after: 60, size: 20 });
 ij.push(banner('INJECT SHEET', 'Operation Island Spoke  |  Proctor reads these aloud, word for word'));
 ij.push(head('0920  SCENARIO'));
-ij.push(say('"You are the leadership of a fighter wing at Andersen Air Force Base, Guam. Recent activity on the Chinese mainland shows China is mobilizing. Your job is to keep Andersen at the highest readiness possible and to be seen doing it, as a visual deterrent. You have 14 fighters and 14 Wing Points each day. Points pay for flying jets and fixing them. You will not have enough to do everything. Each day you get orders with taskers. You will brief the Colonel on what you did and why. If this turns into a fight, you fight with what you kept ready."'));
+ij.push(say('"You are the leadership of a fighter wing at Andersen Air Force Base, Guam. Recent activity on the Chinese mainland shows China is mobilizing. Your job is to keep Andersen at the highest readiness possible and to be seen doing it, as a visual deterrent. You have 14 fighters and 14 Wing Points each day. Points pay for flying jets and fixing them. You will not have enough to do everything. Each day you get orders with taskers. You will brief the Colonel on what you did and why. Should deterrence fail, the wing will defend Guam with whatever it has kept ready."'));
 ij.push(head('0930  START STATUS (to Maintenance)'));
 ij.push(say('"11 of 14 Ready. One F-35A, one F-15EX, and one F-16 are Down."'));
 ij.push(head('0940  C-17'));
