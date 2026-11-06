@@ -209,7 +209,6 @@ const DAYS = [
       { name: 'Provide air cover for the Navy FONOP', ok: "The FONOP completes its transit. China's ships break off.", bad: 'Chinese fighters harass the Navy ships through the transit.' },
       { name: 'Fly DCA over Guam', ok: "Guam's airspace stays clear.", bad: 'A Chinese drone overflies Andersen.' },
       { name: 'Escort the P-8 patrol', ok: 'The P-8 locates the Chinese carrier.', bad: 'The P-8 is chased off before finding the carrier.' },
-      { name: '0940 inject: lost C-17 and 8 crew', decision: true, refuel: true, ok: 'The C-17 is refueled and all 8 crew are housed and fed.', bad: 'The crew is left unaccounted for, or the C-17 is ignored.' },
     ] },
   { n: 3, name: 'Strike Ashore', budget: 14, lead: 'GLP Lead #2',
     taskers: [
@@ -225,10 +224,9 @@ const DAYS = [
       { name: 'Cover Apra Harbor and the Navy ships in port', ok: 'The harbor is covered.', bad: 'Navy ships in port take hits.' },
       { name: 'Fly a CAP over Saipan and Tinian', ok: 'The northern islands stay covered.', bad: 'Chinese aircraft roam the northern Marianas.' },
       { name: "Strike China's missile launchers", strike: true, ok: 'The launchers are destroyed.', bad: 'The launchers survive to fire again.' },
-            { name: '1020 inject: 6 casualties', decision: true, ok: 'MEDEVAC is requested and the triage order puts the arterial bleed first.', bad: 'No MEDEVAC request, or the arterial bleed is not treated first.' },
     ] },
 ];
-const KEY = 'island-spoke-proctor-v6';
+const KEY = 'island-spoke-proctor-v7';
 const START = { F22: { r: 2, d: 0, o: 0 }, F35: { r: 2, d: 1, o: 0 }, F15: { r: 3, d: 1, o: 0 }, F16: { r: 4, d: 1, o: 0 } };
 const clone = o => JSON.parse(JSON.stringify(o));
 const zero = () => ({ F22: 0, F35: 0, F15: 0, F16: 0 });
@@ -413,7 +411,7 @@ function renderFleet() {
 function renderPoints() {
   const d = D(), b = budget(), u = used();
   $('pointsMeta').textContent = `Day ${view + 1} · budget ${b}`;
-  $('pointsBody').innerHTML = [['Flying (Ops)', flyCost()], ['Repairs (Maintenance)', fixCost()], ['C-17 refuel', d.refuel ? 1 : 0]]
+  $('pointsBody').innerHTML = [['Flying (Ops)', flyCost()], ['Repairs (Maintenance)', fixCost()]]
     .map(([k, v]) => `<tr><td>${k}</td><td class="num">${v}</td></tr>`).join('') + `<tr><td><strong>Used</strong></td><td class="num"><strong>${u} / ${b}</strong></td></tr>`;
   $('pLeft').textContent = b - u; $('meterFill').style.width = Math.min(100, (u / b) * 100) + '%';
 }
@@ -451,8 +449,8 @@ function buildCsv() {
     out.push(row([`Day ${i + 1}`, tk.name, tk.decision ? 'Wing CC decision' : (d.assign[k].map(t => AC[t].name).join('; ') || 'Uncovered'),
       r && r.rolls ? r.rolls.map(x => `${x.m.toFixed(1)} vs ${x.sp}%`).join('; ') : '', r && r.rolls ? r.rolls.map(x => `${x.dmg.toFixed(1)} vs ${x.dp}%${x.down ? ' DOWN' : ''}`).join('; ') : '',
       r ? (r.success ? 'SUCCESS' : 'FAILURE') : 'Not rolled', r ? (r.success ? tk.ok : tk.bad) : '', d.rolledAt || ''])); }));
-  out.push('', row(['WING POINTS']), row(['Day', 'Budget', 'Flying', 'Repairs', 'C-17 refuel', 'Used']));
-  S.days.forEach((d, i) => out.push(row([`Day ${i + 1}`, budget(d, i), flyCost(d), fixCost(d), d.refuel ? 1 : 0, used(d)])));
+  out.push('', row(['WING POINTS']), row(['Day', 'Budget', 'Flying', 'Repairs', 'Used']));
+  S.days.forEach((d, i) => out.push(row([`Day ${i + 1}`, budget(d, i), flyCost(d), fixCost(d), used(d)])));
   return out.join('\r\n');
 }
 function buildTxt() {
@@ -492,7 +490,7 @@ function wireReset() {
   };
 }
 // ---------- timer ----------
-const SCHED = [['Explain 0920-0925', 'Execute to 0935', 'Brief 0935-0940'], ['C-17 inject 0940', 'Execute 0940-0955', 'Brief 0955-1000'], ['Turnaround 1000-1005', 'Execute 1005-1015', 'Brief 1015-1020'], ['Opening strike and casualties 1020', 'Execute 1020-1035', 'Brief 1035-1040']];
+const SCHED = [['Explain 0920-0925', 'Execute to 0935', 'Brief 0935-0940'], ['Execute 0940-0955', 'Brief 0955-1000'], ['Turnaround 1000-1005', 'Execute 1005-1015', 'Brief 1015-1020'], ['Opening strike 1020', 'Execute 1020-1035', 'Brief 1035-1040']];
 const T = { total: 900, left: 900, label: 'Execute', running: false, end: 0 };
 const mmss = n => `${Math.floor(Math.max(0, n) / 60)}:${String(Math.max(0, Math.ceil(n) % 60)).padStart(2, '0')}`;
 function drawTimer() {
